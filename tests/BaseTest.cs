@@ -13,8 +13,8 @@ namespace B2Net.Tests {
 
 		public BaseTest() {
 			Options = new B2Options() {
-				KeyId = TestConstants.KeyId,
-				ApplicationKey = TestConstants.ApplicationKey
+				KeyId = B2.Net.Tests.TestConstants.KeyId,
+				ApplicationKey = B2.Net.Tests.TestConstants.ApplicationKey
 			};
 		}
 	}
