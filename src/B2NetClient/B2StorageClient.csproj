@@ -49,15 +49,30 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
+    </Reference>
     <Reference Include="Costura, Version=1.6.2.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.1.6.2\lib\dotnet\Costura.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -73,6 +88,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\AuthenticationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ListView\FileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,16 +128,26 @@
     <Compile Include="Factories\FileSystemFactory.cs" />
     <Compile Include="Factories\Interfaces\IFileSystemFactory.cs" />
     <Compile Include="Help\Utils.cs" />
+    <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Drive.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\FileSystemObject.cs" />
     <Compile Include="Models\Folder.cs" />
+    <Compile Include="Services\AuthentService.cs" />
     <Compile Include="Services\B2ClientService.cs" />
     <Compile Include="Services\FileIconService.cs" />
     <Compile Include="Services\FileSystemService.cs" />
+    <Compile Include="Services\Interfaces\IAuthentService.cs" />
     <Compile Include="Services\Interfaces\IB2ClientService.cs" />
     <Compile Include="Services\Interfaces\IFileIconService.cs" />
     <Compile Include="Services\Interfaces\IFileSystemService.cs" />
+    <Compile Include="Services\Interfaces\ISettingService.cs" />
+    <Compile Include="Services\SettingService.cs" />
+    <Compile Include="Utils\SemaphoreLocker.cs" />
+    <Compile Include="ViewModels\AuthenticationViewModel.cs" />
+    <Compile Include="ViewModels\Clients\ClientViewModel.cs" />
+    <Compile Include="ViewModels\Clients\Interfaces\IClientViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IAuthenticationViewModel.cs" />
     <Compile Include="ViewModels\ListView\FileSystemObjectViewModel.cs" />
     <Compile Include="ViewModels\ListView\FileViewModel.cs" />
     <Compile Include="ViewModels\ListView\FolderViewModel.cs" />
@@ -133,6 +162,9 @@
     <Compile Include="ViewModels\FolderContentViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IFileSystemStructureViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IFolderContentViewModel.cs" />
+    <Compile Include="Views\AuthenticationView.xaml.cs">
+      <DependentUpon>AuthenticationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FileSystemStructureView.xaml.cs">
       <DependentUpon>FileSystemStructureView.xaml</DependentUpon>
     </Compile>
@@ -212,7 +244,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\AuthentView\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
   </ItemGroup>

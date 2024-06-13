@@ -1,0 +1,61 @@
+﻿<UserControl
+    x:Class="FileExplorer.Views.AuthenticationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Caliburn="http://www.caliburnproject.org"
+    xmlns:ViewModels="clr-namespace:FileExplorer.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:FileExplorer.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="AuthentView"
+    d:DataContext="{d:DesignInstance ViewModels:AuthenticationViewModel}"
+    mc:Ignorable="d">
+    <Border BorderBrush="Gray" BorderThickness="1">
+        <StackPanel>
+            <Border
+                Padding="20"
+                BorderBrush="Gray"
+                BorderThickness="0,0,0,1">
+                <StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="AppID" />
+                        <TextBox Margin="0,5,0,0" Text="{Binding AppId}" />
+                    </StackPanel>
+
+                    <StackPanel Margin="0,10,0,0">
+                        <TextBlock Text="App Key" />
+                        <TextBox Margin="0,5,0,0" Text="{Binding AppKey}" />
+                    </StackPanel>
+
+                    <Button
+                        Width="50"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Right"
+                        Caliburn:Message.Attach="SaveAccountCommand"
+                        Content="Save" />
+                </StackPanel>
+            </Border>
+
+            <StackPanel Margin="20">
+                <TextBlock Text="Applications" />
+
+                <ListBox BorderThickness="0" ItemsSource="{Binding Clients}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <DockPanel.ContextMenu>
+                                    <ContextMenu>
+										<MenuItem Command="{Binding EditCommand}" Header="Edit" />
+										<MenuItem Command="{Binding DeleteCommand}" Header="Delete" />
+                                    </ContextMenu>
+                                </DockPanel.ContextMenu>
+                                <TextBlock Text="{Binding AppId}" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+
+</UserControl>

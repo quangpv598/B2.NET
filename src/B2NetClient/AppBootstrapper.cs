@@ -39,10 +39,13 @@
 			container.Singleton<IFileSystemService, FileSystemService>();
             container.Singleton<IFileSystemFactory, FileSystemFactory>();
             container.Singleton<IFileIconService, FileIconService>();
+			container.Singleton<IAuthentService, AuthentService>();
+			container.Singleton<SettingsService>();
 
-            // Register ViewModels
-            container.Singleton<IShellViewModel, ShellViewModel>();
+			// Register ViewModels
+			container.Singleton<IShellViewModel, ShellViewModel>();
             container.Singleton<IMainViewModel, MainViewModel>();
+			container.Singleton<IAuthenticationViewModel, AuthenticationViewModel>();
             container.Singleton<IFileSystemStructureViewModel, FileSystemStructureViewModel>();
             container.Singleton<ViewModels.Interfaces.IFolderContentViewModel, ViewModels.FolderContentViewModel>();
 
