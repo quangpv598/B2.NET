@@ -1,21 +1,25 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:Converters="clr-namespace:FileExplorer.Converters"
-                    xmlns:ViewModels="clr-namespace:FileExplorer.ViewModels.ListView">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converters="clr-namespace:FileExplorer.Converters"
+    xmlns:ViewModels="clr-namespace:FileExplorer.ViewModels.ListView">
     <DataTemplate DataType="{x:Type ViewModels:FileViewModel}">
         <StackPanel Orientation="Horizontal">
-            <Image Source="{Binding File.Path, Converter={x:Static Converters:PathToImageConverter.Instance}}" Width="20" Height="20">
+            <Image
+                Width="20"
+                Height="20"
+                Source="/Images/File.png">
                 <Image.Style>
-                    <Style TargetType="Image" BasedOn="{StaticResource {x:Type Image}}">
+                    <Style BasedOn="{StaticResource {x:Type Image}}" TargetType="Image">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding File.IsHidden}" Value="True">
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="Opacity" Value="0.5" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Image.Style>
             </Image>
-            <TextBlock Text="{Binding DisplayName}" Margin="5, 0"/>
+            <TextBlock Margin="5,0" Text="{Binding DisplayName}" />
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>
