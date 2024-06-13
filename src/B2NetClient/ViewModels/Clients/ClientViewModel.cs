@@ -1,16 +1,11 @@
-﻿using B2Net;
-using FileExplorer.Models;
-using FileExplorer.ViewModels.Clients.Interfaces;
-using FileExplorer.ViewModels.ListView.Interfaces;
-using GalaSoft.MvvmLight.Command;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿namespace FileExplorer.ViewModels.Clients {
+	using B2Net;
+	using FileExplorer.Models;
+	using FileExplorer.ViewModels.Clients.Interfaces;
+	using GalaSoft.MvvmLight.Command;
+	using System;
+	using System.Windows.Input;
 
-namespace FileExplorer.ViewModels.Clients {
 	internal class ClientViewModel : ViewModelBase, IClientViewModel {
 		public Client Model { get; set; }
 
@@ -26,6 +21,9 @@ namespace FileExplorer.ViewModels.Clients {
 
 		public ICommand EditCommand { get; set; }
 
+		public ICommand ClickCommand { get; set; }
+
+		public event EventHandler<ClientViewModel> SelectEvent;
 		public event EventHandler<ClientViewModel> DeleteEvent;
 		public event EventHandler<ClientViewModel> EditEvent;
 
@@ -37,6 +35,7 @@ namespace FileExplorer.ViewModels.Clients {
 
 			EditCommand = new RelayCommand(Edit);
 			DeleteCommand = new RelayCommand(Delete);
+			ClickCommand = new RelayCommand(Select);
 		}
 
 		private void Delete() {
@@ -45,6 +44,10 @@ namespace FileExplorer.ViewModels.Clients {
 
 		public void Edit() {
 			EditEvent?.Invoke(this, this);
+		}
+
+		public void Select() {
+			SelectEvent?.Invoke(this, this);
 		}
 	}
 }

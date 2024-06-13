@@ -42,10 +42,10 @@
                 <ListBox BorderThickness="0" ItemsSource="{Binding Clients}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-							<Button Width="200">
+                            <Button Width="200" Command="{Binding ClickCommand}">
                                 <Button.Template>
                                     <ControlTemplate>
-										<DockPanel Background="{TemplateBinding Background}">
+                                        <DockPanel>
                                             <DockPanel.ContextMenu>
                                                 <ContextMenu>
                                                     <MenuItem Command="{Binding EditCommand}" Header="Edit" />
