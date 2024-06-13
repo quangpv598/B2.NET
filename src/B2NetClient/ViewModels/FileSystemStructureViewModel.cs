@@ -6,6 +6,7 @@
 	using FileExplorer.ViewModels.Interfaces;
 	using FileExplorer.ViewModels.TreeView.Interfaces;
 	using System;
+	using System.Windows.Input;
 
 	internal class FileSystemStructureViewModel : ViewModelBase, IFileSystemStructureViewModel {
 		private readonly IFileSystemService _fileSystemService;
@@ -20,7 +21,7 @@
 				NotifyOfPropertyChange(nameof(Drives));
 			});
 		}
-
 		public IObservableCollection<IDriveViewModel> Drives { get; private set; }
+
 	}
 }

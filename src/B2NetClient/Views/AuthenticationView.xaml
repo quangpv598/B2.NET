@@ -42,15 +42,21 @@
                 <ListBox BorderThickness="0" ItemsSource="{Binding Clients}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <DockPanel>
-                                <DockPanel.ContextMenu>
-                                    <ContextMenu>
-										<MenuItem Command="{Binding EditCommand}" Header="Edit" />
-										<MenuItem Command="{Binding DeleteCommand}" Header="Delete" />
-                                    </ContextMenu>
-                                </DockPanel.ContextMenu>
-                                <TextBlock Text="{Binding AppId}" />
-                            </DockPanel>
+							<Button Width="200">
+                                <Button.Template>
+                                    <ControlTemplate>
+										<DockPanel Background="{TemplateBinding Background}">
+                                            <DockPanel.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Command="{Binding EditCommand}" Header="Edit" />
+                                                    <MenuItem Command="{Binding DeleteCommand}" Header="Delete" />
+                                                </ContextMenu>
+                                            </DockPanel.ContextMenu>
+                                            <TextBlock Text="{Binding AppId}" />
+                                        </DockPanel>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

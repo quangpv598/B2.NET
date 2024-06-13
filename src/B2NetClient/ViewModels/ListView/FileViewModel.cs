@@ -30,7 +30,7 @@
 
         public override void DoubleClick()
         {
-            Process.Start(File.Path);
+            //Process.Start(File.Path);
         }
     }
 }
