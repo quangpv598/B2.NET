@@ -109,6 +109,7 @@
     <Compile Include="Factories\FileSystemFactory.cs" />
     <Compile Include="Factories\Interfaces\IFileSystemFactory.cs" />
     <Compile Include="Help\Utils.cs" />
+    <Compile Include="Models\B2Files.cs" />
     <Compile Include="Models\Drive.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\FileSystemObject.cs" />
