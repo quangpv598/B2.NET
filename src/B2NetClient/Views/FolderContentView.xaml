@@ -30,14 +30,21 @@
                 </Button>
 
 
-				<Button Command="{Binding UploadCommand}" Grid.Column="1" ToolTip="Upload file">
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding UploadCommand}"
+                    ToolTip="Upload file"
+                    Visibility="Collapsed">
                     <fa:ImageAwesome
                         Height="10"
                         Margin="5"
                         Icon="Upload" />
                 </Button>
 
-				<Button Grid.Column="2" Command="{Binding RefreshCommand}" ToolTip="Refresh">
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding RefreshCommand}"
+                    ToolTip="Refresh">
                     <fa:ImageAwesome
                         Height="10"
                         Margin="5"

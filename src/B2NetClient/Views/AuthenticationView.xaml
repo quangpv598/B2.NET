@@ -46,9 +46,10 @@
                     Refresh
                 </Button>
 
-                <TextBlock Text="Applications" />
+                <TextBlock Text="Applications Key" />
 
                 <ListBox
+                    Margin="0,15,0,0"
                     BorderThickness="0"
                     ItemsSource="{Binding ApplicationKeys}"
                     SelectedItem="{Binding SelectedClient}">

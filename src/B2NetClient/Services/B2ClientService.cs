@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Configuration;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace FileExplorer.Services {
 	public class B2ClientService : IB2ClientService {
@@ -17,12 +18,31 @@ namespace FileExplorer.Services {
 		public event EventHandler<List<B2Bucket>> OnBucketsFetched;
 
 		public async Task<B2Client> Connect(string appId, string appKey) {
-			return await Task.Run<B2Client>(() => new B2Client(appId, appKey));
+			return await Task.Run(() => {
+				var options = new B2Options() {
+					KeyId = appId,
+					ApplicationKey = appKey,
+					PersistBucket = false
+				}; 
+				var client = new B2Client(B2Client.Authorize(options));
+				return client;
+			});
 		}
 
 		public async Task<List<B2Bucket>> FetchB2Buckets(B2Client client) {
 			return await Task.Run(async () => {
-				var buckets = await client.Buckets.GetList();
+				List<B2Bucket> buckets = null;
+				if (client.Capabilities.BucketId == null) {
+					buckets = await client.Buckets.GetList();
+				}
+				else {
+					buckets = new List<B2Bucket>() {
+						new B2Bucket {
+							BucketId = client.Capabilities.BucketId,
+							BucketName = client.Capabilities.BucketName,
+						}
+					};
+				}
 				OnBucketsFetched?.Invoke(this, buckets);
 				return buckets;
 			});

@@ -28,9 +28,9 @@
             set => File = (File)value;
         }
 
-        public override void DoubleClick()
+		public override void DoubleClick()
         {
-            //Process.Start(File.Path);
-        }
-    }
+			//Process.Start(File.Path);
+		}
+	}
 }
