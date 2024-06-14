@@ -103,6 +103,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ListView\UploadFileView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\TreeView\DriveView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -174,6 +178,9 @@
     </Compile>
     <Compile Include="Views\FolderContentView.xaml.cs">
       <DependentUpon>FolderContentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ListView\UploadFileView.xaml.cs">
+      <DependentUpon>UploadFileView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>

@@ -5,28 +5,34 @@
     xmlns:Caliburn="http://www.caliburnproject.org"
     xmlns:ViewModels="clr-namespace:FileExplorer.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:folders="clr-namespace:FileExplorer.Views.ListView"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance ViewModels:MainViewModel}"
     mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
-			<ColumnDefinition />
-			<ColumnDefinition Width="Auto" />
-			
-			<ColumnDefinition />
+            <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
-			
+
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
-		<ContentControl Caliburn:View.Model="{Binding AuthenticationViewModel}" />
+        <ContentControl Caliburn:View.Model="{Binding AuthenticationViewModel}" />
 
-		<GridSplitter Grid.Column="1" />
+        <GridSplitter Grid.Column="1" />
 
-		<ContentControl  Grid.Column="2" Caliburn:View.Model="{Binding FileSystemStructureViewModel}" />
+        <ContentControl Grid.Column="2" Caliburn:View.Model="{Binding FileSystemStructureViewModel}" />
 
         <GridSplitter Grid.Column="3" />
 
         <ContentControl Grid.Column="4" Caliburn:View.Model="{Binding FolderContentViewModel}" />
+
+        <Popup IsOpen="True">
+
+            <TextBox Background="Red">23223333</TextBox>
+        </Popup>
     </Grid>
 </UserControl>
