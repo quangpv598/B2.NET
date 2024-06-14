@@ -17,7 +17,7 @@
 		}
 
 		protected FileSystemObject(string name, string path) {
-			Name = path.Split('/').ToArray().Last().ToString();
+			Name = name;
 			Path = path;
 			IsHidden = false;// new DirectoryInfo(path).Attributes.HasFlag(FileAttributes.Hidden);
 		}

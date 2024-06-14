@@ -16,13 +16,13 @@
         </Grid.RowDefinitions>
         <Border>
             <DockPanel>
-				<Button Command="{Binding RefreshCommand}" DockPanel.Dock="Right">
-					<fa:ImageAwesome
+                <Button Command="{Binding RefreshCommand}" DockPanel.Dock="Right">
+                    <fa:ImageAwesome
                         Height="10"
                         Margin="5"
                         Icon="Refresh" />
-				</Button>
-			</DockPanel>
+                </Button>
+            </DockPanel>
         </Border>
         <TreeView
             Grid.Row="1"

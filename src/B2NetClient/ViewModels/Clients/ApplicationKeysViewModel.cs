@@ -6,8 +6,8 @@
 	using System;
 	using System.Windows.Input;
 
-	internal class ClientViewModel : ViewModelBase, IClientViewModel {
-		public Client Model { get; set; }
+	internal class ApplicationKeysViewModel : ViewModelBase, IClientViewModel {
+		public ApplicationKeys Model { get; set; }
 
 		public Guid Id { get; set; }
 
@@ -23,11 +23,11 @@
 
 		public ICommand ClickCommand { get; set; }
 
-		public event EventHandler<ClientViewModel> SelectEvent;
-		public event EventHandler<ClientViewModel> DeleteEvent;
-		public event EventHandler<ClientViewModel> EditEvent;
+		public event EventHandler<ApplicationKeysViewModel> SelectEvent;
+		public event EventHandler<ApplicationKeysViewModel> DeleteEvent;
+		public event EventHandler<ApplicationKeysViewModel> EditEvent;
 
-		public ClientViewModel(Client model) { 
+		public ApplicationKeysViewModel(ApplicationKeys model) { 
 			Model = model;
 			AppId = model.AppId;
 			AppKey = model.AppKey;

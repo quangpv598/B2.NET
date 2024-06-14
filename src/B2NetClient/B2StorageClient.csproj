@@ -137,16 +137,14 @@
     <Compile Include="Help\FileDragDropHelper.cs" />
     <Compile Include="Help\Utils.cs" />
     <Compile Include="Models\B2Files.cs" />
-    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\ApplicationKeys.cs" />
     <Compile Include="Models\Drive.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\FileSystemObject.cs" />
     <Compile Include="Models\Folder.cs" />
-    <Compile Include="Services\AuthentService.cs" />
     <Compile Include="Services\B2ClientService.cs" />
     <Compile Include="Services\FileIconService.cs" />
     <Compile Include="Services\FileSystemService.cs" />
-    <Compile Include="Services\Interfaces\IAuthentService.cs" />
     <Compile Include="Services\Interfaces\IB2ClientService.cs" />
     <Compile Include="Services\Interfaces\IFileIconService.cs" />
     <Compile Include="Services\Interfaces\IFileSystemService.cs" />
@@ -154,7 +152,7 @@
     <Compile Include="Services\SettingService.cs" />
     <Compile Include="Utils\SemaphoreLocker.cs" />
     <Compile Include="ViewModels\AuthenticationViewModel.cs" />
-    <Compile Include="ViewModels\Clients\ClientViewModel.cs" />
+    <Compile Include="ViewModels\Clients\ApplicationKeysViewModel.cs" />
     <Compile Include="ViewModels\Clients\Interfaces\IClientViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IAuthenticationViewModel.cs" />
     <Compile Include="ViewModels\ListView\FileSystemObjectViewModel.cs" />

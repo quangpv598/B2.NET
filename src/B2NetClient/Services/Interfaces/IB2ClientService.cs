@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 namespace FileExplorer.Services.Interfaces {
 	public interface IB2ClientService {
 		event EventHandler<List<B2Bucket>> OnBucketsFetched;
-		Task<B2FileList> FetchFilesBaseOnBucketIdAsync(string bucketId);
+		Task<B2Client> Connect(string appId, string appKey);
+		Task<List<B2Bucket>> FetchB2Buckets(B2Client client);
+		Task<B2FileList> FetchFilesBaseOnBucketIdAsync(B2Client client, string bucketId);
+		Task<B2File> DownloadFileById(B2Client client, string fileId);
+		Task UploadLargeFile(B2Client client, string bucketId, string filePath);
+		Task<B2File> DeleteFileById(B2Client client, string fileId, string fileName);
 	}
 }

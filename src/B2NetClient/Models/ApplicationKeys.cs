@@ -2,7 +2,7 @@
 using System;
 
 namespace FileExplorer.Models {
-	public class Client
+	public class ApplicationKeys
 	{
 		public Guid Id { get; set; }
 
@@ -10,7 +10,7 @@ namespace FileExplorer.Models {
 
 		public string AppKey {  get; set; }
 
-		public Client() {
+		public ApplicationKeys() {
 			Id = Guid.NewGuid();	
 		}
 	}
