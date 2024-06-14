@@ -39,6 +39,7 @@
 			container.Singleton<SettingsService>();
 			container.Singleton<IEventAggregator, EventAggregator>();
             container.Singleton<IWindowManager, WindowManager>();
+			container.Singleton<IB2ClientStateManager, B2ClientStateManager>();
 			container.Singleton<IB2ClientService, B2ClientService>();
 			container.Singleton<IFileSystemService, FileSystemService>();
             container.Singleton<IFileSystemFactory, FileSystemFactory>();

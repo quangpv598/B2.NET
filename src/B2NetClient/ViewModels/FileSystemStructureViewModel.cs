@@ -14,20 +14,22 @@
 
 	internal class FileSystemStructureViewModel : ViewModelBase, IFileSystemStructureViewModel {
 
-		private B2Client _currentB2Client;
-
+		private readonly IB2ClientStateManager _currentB2ClientStateManager;
 		private readonly IAuthenticationViewModel _authenticationViewModel;
 		private readonly IFileSystemService _fileSystemService;
 		private readonly IB2ClientService _b2ClientService;
 		private readonly IFolderContentViewModel _folderContentViewModel;
 
+		private B2Client _currentB2Client => _currentB2ClientStateManager.CurrentB2Client;
+
 		public ICommand RefreshCommand { get; private set; }
 
-		public FileSystemStructureViewModel(IFileSystemService fileSystemService, IAuthenticationViewModel authenticationViewModel, IB2ClientService b2ClientService, IFolderContentViewModel folderContentViewModel) {
+		public FileSystemStructureViewModel(IFileSystemService fileSystemService, IAuthenticationViewModel authenticationViewModel, IB2ClientService b2ClientService, IFolderContentViewModel folderContentViewModel, IB2ClientStateManager currentB2ClientStateManager) {
 			_fileSystemService = fileSystemService;
 			_authenticationViewModel = authenticationViewModel;
 			_b2ClientService = b2ClientService;
 			_folderContentViewModel = folderContentViewModel;
+			_currentB2ClientStateManager = currentB2ClientStateManager;
 
 			_authenticationViewModel.OnApplicationKeysSelected += _authenticationViewModel_OnApplicationKeysSelected;
 			fileSystemService.B2ClientService.OnBucketsFetched += B2ClientService_OnBucketsFetched;
@@ -52,7 +54,7 @@
 				if (e.B2Client == null) {
 					e.B2Client = await _b2ClientService.Connect(e.AppId, e.AppKey);
 				}
-				_currentB2Client = e.B2Client;
+				_currentB2ClientStateManager.SetCurrentB2Client(e.B2Client);
 				await _fileSystemService.FetchBuckets(e.B2Client);
 			});
 		}
