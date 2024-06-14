@@ -32,6 +32,7 @@
 					dicB2Buckets.Add(bucket.BucketId, null);
 				}
 			}
+
 			return buckets.Select(fileSystemFactory.MakeDrive);
 		}
 

@@ -9,6 +9,7 @@
 		protected FileSystemObject(B2File file) {
 			Name = file.FileName.Split('/').ToArray().Last().ToString();
 			Path = file.FileName;//.Replace($"/{Name}", "");
+			FileId = file.FileId;
 		}
 
 		protected FileSystemObject(string path) {
@@ -25,6 +26,7 @@
 		public string Name { get; }
 
 		public string Path { get; }
+		public string FileId { get; }
 
 		public bool IsHidden { get; }
 	}

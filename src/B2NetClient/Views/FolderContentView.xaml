@@ -20,6 +20,7 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
                 <Button Command="{Binding AddFolderCommand}" ToolTip="Add folder">
@@ -42,11 +43,21 @@
                 <Button
                     Grid.Column="2"
                     Command="{Binding DownloadCommand}"
-                    ToolTip="Refresh">
+                    ToolTip="Download files">
                     <fa:ImageAwesome
                         Height="10"
                         Margin="5"
                         Icon="Download" />
+                </Button>
+
+                <Button
+                    Grid.Column="3"
+                    Command="{Binding DeleteCommand}"
+                    ToolTip="Delete files">
+                    <fa:ImageAwesome
+                        Height="10"
+                        Margin="5"
+                        Icon="Trash" />
                 </Button>
             </Grid>
         </Border>

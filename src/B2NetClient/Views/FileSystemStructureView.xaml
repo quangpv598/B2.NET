@@ -33,11 +33,11 @@
             ItemsSource="{Binding Drives}"
             VirtualizingStackPanel.IsVirtualizing="True"
             VirtualizingStackPanel.VirtualizationMode="Recycling">
-            <TreeView.ContextMenu>
+            <!--<TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Command="{Binding RefreshCommand}">Refresh</MenuItem>
                 </ContextMenu>
-            </TreeView.ContextMenu>
+            </TreeView.ContextMenu>-->
             <TreeView.Resources>
                 <ResourceDictionary>
                     <ResourceDictionary.MergedDictionaries>

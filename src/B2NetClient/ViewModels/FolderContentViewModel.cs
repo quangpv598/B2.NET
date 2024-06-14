@@ -19,6 +19,8 @@
 		public ICommand DownloadCommand { get; set; }
 		public ICommand AddFolderCommand { get; set; }
 
+		public ICommand DeleteCommand { get; set; }	
+
 		public event EventHandler OnUploadButtonClickEvent;
 		public event EventHandler OnCreateFolderButtonClickEvent;
 
@@ -31,6 +33,7 @@
 			UploadCommand = new RelayCommand(Upload);
 			DownloadCommand = new RelayCommand(Download);
 			AddFolderCommand = new RelayCommand(AddFolder);
+			DeleteCommand = new RelayCommand(Delete);
 		}
 
 		public IObservableCollection<IFileSystemObjectViewModel> Entries { get; } = new BindableCollection<IFileSystemObjectViewModel>();
@@ -75,6 +78,10 @@
 
 		private void AddFolder() {
 			OnCreateFolderButtonClickEvent?.Invoke(this, EventArgs.Empty);
+		}
+
+		private void Delete() {
+
 		}
     }
 }
