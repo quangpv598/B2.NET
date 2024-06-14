@@ -6,6 +6,7 @@
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:local="clr-namespace:FileExplorer.Views.ListView"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utility="clr-namespace:FileExplorer.Help"
     mc:Ignorable="d">
     <Border Background="White" CornerRadius="5">
         <Border.Effect>
@@ -32,9 +33,9 @@
 
             <Grid
                 Name="ImagePanel"
+                utility:FileDragDropHelper.FileDragDropTarget="{Binding FileUploadViewModel}"
                 AllowDrop="true"
-                Background="Transparent"
-                Drop="ImagePanel_Drop" />
+                Background="Transparent" />
         </Grid>
     </Border>
 

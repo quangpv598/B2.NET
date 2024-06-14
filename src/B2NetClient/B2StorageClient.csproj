@@ -134,6 +134,7 @@
     <Compile Include="Converters\PathToImageConverter.cs" />
     <Compile Include="Factories\FileSystemFactory.cs" />
     <Compile Include="Factories\Interfaces\IFileSystemFactory.cs" />
+    <Compile Include="Help\FileDragDropHelper.cs" />
     <Compile Include="Help\Utils.cs" />
     <Compile Include="Models\B2Files.cs" />
     <Compile Include="Models\ApplicationKeys.cs" />
@@ -155,11 +156,15 @@
     <Compile Include="ViewModels\Clients\Interfaces\IClientViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IAuthenticationViewModel.cs" />
     <Compile Include="ViewModels\ListView\FileSystemObjectViewModel.cs" />
+    <Compile Include="ViewModels\ListView\FileUploadViewModel.cs" />
     <Compile Include="ViewModels\ListView\FileViewModel.cs" />
     <Compile Include="ViewModels\ListView\FolderViewModel.cs" />
+    <Compile Include="ViewModels\ListView\Interfaces\IFileDragDropTarget.cs" />
     <Compile Include="ViewModels\ListView\Interfaces\IFileSystemObjectViewModel.cs" />
+    <Compile Include="ViewModels\ListView\Interfaces\IFileUploadViewModel.cs" />
     <Compile Include="ViewModels\ListView\Interfaces\IFileViewModel.cs" />
     <Compile Include="ViewModels\ListView\Interfaces\IFolderViewModel.cs" />
+    <Compile Include="ViewModels\TreeView\CreateFolderViewModel.cs" />
     <Compile Include="ViewModels\TreeView\DriveViewModel.cs" />
     <Compile Include="ViewModels\TreeView\FolderViewModel.cs" />
     <Compile Include="ViewModels\TreeView\Interfaces\IDriveViewModel.cs" />
