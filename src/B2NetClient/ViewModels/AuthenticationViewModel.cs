@@ -63,13 +63,23 @@ namespace FileExplorer.ViewModels {
 
 		public ObservableCollection<ApplicationKeysViewModel> ApplicationKeys { get; set; }
 
+		public ICommand RefreshApplicationKeyCommand { get; set; }
+
 		public AuthenticationViewModel(SettingsService settingsService, IB2ClientService b2ClientService) {
 			_settingsService = settingsService;
 			_b2ClientService = b2ClientService;
 
-			ApplicationKeys = new ObservableCollection<ApplicationKeysViewModel>();
+			LoadData();
 
-			var settings = settingsService.LoadSettings();
+			RefreshApplicationKeyCommand = new RelayCommand(() => {
+				//LoadData();
+			});
+		}
+
+		public void LoadData() {
+
+			ApplicationKeys = new ObservableCollection<ApplicationKeysViewModel>();
+			var settings = _settingsService.LoadSettings();
 
 			if (settings.ApplicationKeys is null || !settings.ApplicationKeys.Any()) return;
 
@@ -84,11 +94,13 @@ namespace FileExplorer.ViewModels {
 
 				ApplicationKeys.Add(clientVM);
 			}
+
+			NotifyOfPropertyChange(nameof(ApplicationKeys));
 		}
 
 		public async Task SaveAccountCommand() {
 			try {
-				var client = await _b2ClientService.Connect(AppId, AppKey);				
+				var client = await _b2ClientService.Connect(AppId, AppKey);
 				if (!IsEditting) {
 					if (ApplicationKeys.Any(c => Equals(AppId, c.AppId))) {
 						MessageBox.Show("The AppId is duplicated with previous one", "Warning", MessageBoxButton.OK);

@@ -37,12 +37,18 @@
             </Border>
 
             <StackPanel Margin="20">
+
+                <Button
+                    Margin="5"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding RefreshApplicationKeyCommand}"
+                    Visibility="Collapsed">
+                    Refresh
+                </Button>
+
                 <TextBlock Text="Applications" />
 
                 <ListBox
-                    BorderThickness="0"
-                    ItemsSource="{Binding ApplicationKeys}"
-                    SelectedItem="{Binding SelectedClient}">
                     BorderThickness="0"
                     ItemsSource="{Binding ApplicationKeys}"
                     SelectedItem="{Binding SelectedClient}">
