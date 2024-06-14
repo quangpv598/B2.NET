@@ -14,6 +14,8 @@ namespace FileExplorer.Services {
 		public string CurrentBucketId { get; set; } = "";
 		public string CurrentFolder { get; set; } = "";
 
+		public bool IsFetchingBucket { get; set; }
+
 		public void SetCurrentB2Client(B2Client client) {
 			CurrentB2Client = client;
 		}

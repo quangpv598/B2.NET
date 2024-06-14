@@ -45,6 +45,12 @@
 
 			FolderContentViewModel.OnUploadButtonClickEvent += HandleUploadFileDiablogShow;
 			FolderContentViewModel.OnCreateFolderButtonClickEvent += HandleCreateFolderButtonClick;
+
+			createFolderViewModel.OnRequestViewClosed += CreateFolderViewModel_OnRequestViewClosed;
+		}
+
+		private void CreateFolderViewModel_OnRequestViewClosed(object sender, TreeView.CreateFolderViewModel e) {
+			UploadFileDiablogVisibility = Visibility.Collapsed;
 		}
 
 		public IFileSystemStructureViewModel FileSystemStructureViewModel { get; }

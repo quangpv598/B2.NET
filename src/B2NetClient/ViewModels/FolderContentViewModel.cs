@@ -24,7 +24,6 @@
 
 		private readonly IFileSystemFactory fileSystemFactory;
 		private readonly IB2ClientService _b2ClientService;
-		private readonly IB2ClientStateManager _clientStateManager;
 		private readonly IFileSystemService fileSystemService;
 
 		public ICommand UploadCommand { get; set; }
@@ -36,11 +35,16 @@
 		public event EventHandler OnUploadButtonClickEvent;
 		public event EventHandler OnCreateFolderButtonClickEvent;
 
+		public string CurrentBucketId { get; set; }
+		public string CurrentFolder { get; set; }
+
+		public IB2ClientStateManager B2ClientStateManager { get; }
+
 		public FolderContentViewModel(IEventAggregator eventAggreagtor, IFileSystemService fileSystemService, IB2ClientStateManager clientStateManager, IB2ClientService b2ClientService, IFileSystemFactory fileSystemFactory) {
 			eventAggreagtor.Subscribe(this);
 
 			this.fileSystemService = fileSystemService;
-			_clientStateManager = clientStateManager;
+			B2ClientStateManager = clientStateManager;
 			_b2ClientService = b2ClientService;
 			this.fileSystemFactory = fileSystemFactory;
 
@@ -62,6 +66,11 @@
 				path = value;
 				NotifyOfPropertyChange(() => Path);
 
+				CurrentBucketId = B2ClientStateManager.CurrentBucketId;
+				CurrentFolder = B2ClientStateManager.CurrentFolder;
+				NotifyOfPropertyChange(() => CurrentBucketId);
+				NotifyOfPropertyChange(() => CurrentFolder);
+
 				Utils.InvokeIfNeed(async () => {
 					Entries.Clear();
 					Entries.AddRange(await fileSystemService.GetFileSystemObjects(path));
@@ -76,7 +85,7 @@
 		}
 
 		private bool IsCheck() {
-			if (string.IsNullOrEmpty(_clientStateManager.CurrentBucketId)) {
+			if (string.IsNullOrEmpty(B2ClientStateManager.CurrentBucketId)) {
 				MessageBox.Show("Please select a application key");
 				return false;
 			}
@@ -97,23 +106,23 @@
 			}
 
 
-			Task.Run(async () => {
+			Task.Run((Func<Task>)(async () => {
 				VistaOpenFileDialog dialog = new VistaOpenFileDialog();
 				dialog.Filter = "All files (*.*)|*.*";
 				dialog.Multiselect = true;
 				if ((bool)dialog.ShowDialog()) {
 					foreach (var file in dialog.FileNames) {
-						var b2File = await _b2ClientService.UploadFile(_clientStateManager.CurrentB2Client,
-							bucketId: _clientStateManager.CurrentBucketId,
-							folderName: _clientStateManager.CurrentFolder.Replace($"{_clientStateManager.CurrentBucketId}/", ""),
+						var b2File = await _b2ClientService.UploadFile((B2Net.B2Client)this.B2ClientStateManager.CurrentB2Client,
+							bucketId: (string)this.B2ClientStateManager.CurrentBucketId,
+							folderName: (string)this.B2ClientStateManager.CurrentFolder.Replace($"{this.B2ClientStateManager.CurrentBucketId}/", ""),
 							filePath: file);
 
 						if (b2File.FileId != null) {
-							Entries.Add(fileSystemFactory.MakeFile(b2File));
+							Entries.Add(fileSystemFactory.MakeFile((B2Net.Models.B2File)b2File));
 						}
 					}
 				}
-			});
+			}));
 
 		}
 
@@ -123,7 +132,7 @@
 				return;
 			}
 
-			Task.Run(async () => {
+			Task.Run((Func<Task>)(async () => {
 				var dialog = new VistaFolderBrowserDialog();
 				dialog.Description = "Please select a folder to save files.";
 				dialog.UseDescriptionForTitle = true; // This applies to the Vista style dialog only, not the old dialog.
@@ -134,17 +143,22 @@
 					for (int i = 0; i < numberOfItems; i++) {
 
 						var item = selectedItems.ElementAt(i);
-						var file = await _b2ClientService.DownloadFileById(_clientStateManager.CurrentB2Client, item.Model.FileId);
+						var file = await _b2ClientService.DownloadFileById((B2Net.B2Client)this.B2ClientStateManager.CurrentB2Client, item.Model.FileId);
 						try {
-							System.IO.File.WriteAllBytes(System.IO.Path.Combine(_downloadFilesPath, file.FileName), file.FileData);
+							System.IO.File.WriteAllBytes(System.IO.Path.Combine(_downloadFilesPath, (string)file.FileName), (byte[])file.FileData);
 						}
 						catch (Exception ex) { }
 					}
 				}
-			});
+			}));
 		}
 
 		private void AddFolder() {
+
+			if (!IsCheck()) {
+				return;
+			}
+
 			OnCreateFolderButtonClickEvent?.Invoke(this, EventArgs.Empty);
 		}
 
@@ -154,7 +168,7 @@
 				return;
 			}
 
-			Task.Run(async () => {
+			Task.Run((Func<Task>)(async () => {
 				if (MessageBox.Show("Are you sure to delete files?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
 					return;
 				}
@@ -166,7 +180,7 @@
 					var item = selectedItems.ElementAt(i);
 
 					if (item is FileViewModel) {
-						var file = await _b2ClientService.DeleteFileById(_clientStateManager.CurrentB2Client, item.Model.FileId, item.Model.Path);
+						var file = await _b2ClientService.DeleteFileById((B2Net.B2Client)this.B2ClientStateManager.CurrentB2Client, item.Model.FileId, item.Model.Path);
 						Utils.InvokeIfNeed(() => {
 							Entries.Remove(item);
 						});
@@ -174,10 +188,10 @@
 					else if (item is FolderViewModel) {
 						var bucketId = item.Model.Path.Split('/').FirstOrDefault();
 						if (bucketId != null) {
-							if (_clientStateManager.DicB2Buckets.ContainsKey(bucketId)) {
-								var files = _clientStateManager.DicB2Buckets[bucketId].B2FileList.Files.Where(f => $"{bucketId}/{f.FileName}".StartsWith($"{item.Model.Path}/"));
+							if (this.B2ClientStateManager.DicB2Buckets.ContainsKey(bucketId)) {
+								var files = Enumerable.Where<B2Net.Models.B2File>(this.B2ClientStateManager.DicB2Buckets[bucketId].B2FileList.Files, (Func<B2Net.Models.B2File, bool>)(f => $"{bucketId}/{f.FileName}".StartsWith($"{item.Model.Path}/")));
 								foreach (var file in files) {
-									await _b2ClientService.DeleteFileById(_clientStateManager.CurrentB2Client, file.FileId, file.FileName);
+									await _b2ClientService.DeleteFileById((B2Net.B2Client)this.B2ClientStateManager.CurrentB2Client, file.FileId, file.FileName);
 									Utils.InvokeIfNeed(() => {
 										Entries.Remove(item);
 									});
@@ -187,7 +201,7 @@
 					}
 
 				}
-			});
+			}));
 		}
 
 	}

@@ -10,6 +10,7 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Threading.Tasks;
+	using System.Windows;
 	using IFolderViewModel = FileExplorer.ViewModels.TreeView.Interfaces.IFolderViewModel;
 
 	internal class FileSystemService : IFileSystemService {
@@ -32,6 +33,11 @@
 			foreach (var bucket in buckets) {
 				if (!dicB2Buckets.ContainsKey(bucket.BucketId)) {
 					dicB2Buckets.Add(bucket.BucketId, null);
+
+					try {
+						await GetB2FilesAsync(bucket.BucketId);
+					}
+					catch (Exception ex) { }
 				}
 			}
 
@@ -50,62 +56,72 @@
 			string path,
 			Func<string, T> folderSelector,
 			Func<B2File, T> fileSelector = null) {
-			B2Files b2Files = await GetB2FilesAsync(path);
+			try {
 
-			if (b2Files != null && b2Files.B2FileList != null) {
-				bool isRootPath = dicB2Buckets.Keys.Contains(path);
-				string bucketId = isRootPath ? path : path.Split('/').FirstOrDefault();
+				b2ClientStateManager.IsFetchingBucket = true;
 
-				if (isRootPath) {
+				B2Files b2Files = await GetB2FilesAsync(path);
 
-					b2ClientStateManager.CurrentBucketId = bucketId;
+				if (b2Files != null && b2Files.B2FileList != null) {
+					bool isRootPath = dicB2Buckets.Keys.Contains(path);
+					string bucketId = isRootPath ? path : path.Split('/').FirstOrDefault();
 
-					var directoriesInRootBucket = b2Files.DicFolder
-						.Where(d => !d.Key.Replace($"{bucketId}/", "").Contains("/"))
-						.Select(d => folderSelector(d.Key));
+					if (isRootPath) {
 
-					if (fileSelector != null) {
-						var fileInRootBucket = b2Files.B2FileList.Files
-						.Where(f => !f.FileName.Contains("/"))
-						.Select(f => fileSelector!.Invoke(f));
+						b2ClientStateManager.CurrentBucketId = bucketId;
+						b2ClientStateManager.CurrentFolder = "";
 
-						return directoriesInRootBucket.Concat(fileInRootBucket.Cast<T>());
+						var directoriesInRootBucket = b2Files.DicFolder
+							.Where(d => !d.Key.Replace($"{bucketId}/", "").Contains("/"))
+							.Select(d => folderSelector(d.Key));
+
+						if (fileSelector != null) {
+							var fileInRootBucket = b2Files.B2FileList.Files
+							.Where(f => !f.FileName.Contains("/"))
+							.Select(f => fileSelector!.Invoke(f));
+
+							return directoriesInRootBucket.Concat(fileInRootBucket.Cast<T>());
+						}
+						else {
+							return directoriesInRootBucket.Cast<T>();
+						}
+
 					}
 					else {
-						return directoriesInRootBucket.Cast<T>();
-					}
 
-				}
-				else {
+						b2ClientStateManager.CurrentFolder = path;
 
-					b2ClientStateManager.CurrentFolder = path;
+						var filesAndFoldersInSubfolder = b2Files.DicFolder[path];
 
-					var filesAndFoldersInSubfolder = b2Files.DicFolder[path];
+						if (fileSelector != null) {
+							var filesSubfolder = b2Files.B2FileList.Files
+							.Where(f => filesAndFoldersInSubfolder.Contains($"{bucketId}/{f.FileName}"))
+							.Select(f => fileSelector!.Invoke(f))
+							.Cast<IFileViewModel>();
 
-					if (fileSelector != null) {
-						var filesSubfolder = b2Files.B2FileList.Files
-						.Where(f => filesAndFoldersInSubfolder.Contains($"{bucketId}/{f.FileName}"))
-						.Select(f => fileSelector!.Invoke(f))
-						.Cast<IFileViewModel>();
+							var directories = filesAndFoldersInSubfolder
+								.Where(d => !filesSubfolder.Select(f => $"{bucketId}/{f.Model.Path}").Contains(d))
+								.Select(d => folderSelector(d));
 
-						var directories = filesAndFoldersInSubfolder
-							.Where(d => !filesSubfolder.Select(f => $"{bucketId}/{f.Model.Path}").Contains(d))
-							.Select(d => folderSelector(d));
+							return directories.Concat(filesSubfolder.Cast<T>());
+						}
+						else {
+							var fileArr = b2Files.B2FileList.Files.Select(f => $"{bucketId}/{f.FileName}");
+							var directories = filesAndFoldersInSubfolder
+								.Where(d => !fileArr.Contains(d))
+								.Select(d => folderSelector(d));
 
-						return directories.Concat(filesSubfolder.Cast<T>());
-					}
-					else {
-						var fileArr = b2Files.B2FileList.Files.Select(f => $"{bucketId}/{f.FileName}");
-						var directories = filesAndFoldersInSubfolder
-							.Where(d => !fileArr.Contains(d))
-							.Select(d => folderSelector(d));
-
-						return directories.Cast<T>();
+							return directories.Cast<T>();
+						}
 					}
 				}
+
+				return null;
+			}
+			finally {
+				b2ClientStateManager.IsFetchingBucket = false;
 			}
 
-			return null;
 		}
 
 		private async Task<B2Files> GetB2FilesAsync(string path) {

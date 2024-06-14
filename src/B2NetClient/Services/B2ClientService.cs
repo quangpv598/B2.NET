@@ -63,7 +63,7 @@ namespace FileExplorer.Services {
 		public async Task<B2FileList> FetchFilesBaseOnBucketIdAsync(B2Client client, string bucketId) {
 			_logViewModel.WriteLog($"Fetching files in buckets {bucketId}...");
 			var _ = await client.Files.GetList(bucketId: bucketId);
-			_logViewModel.WriteLog($"Fetch files completed.");
+			_logViewModel.WriteLog($"[{bucketId}]Fetch files completed.");
 			return _;
 		}
 
@@ -85,7 +85,7 @@ namespace FileExplorer.Services {
 			else {
 				_ = await UploadLargeFile(client, bucketId, folderName, filePath);
 			}
-			_logViewModel.WriteLog($"Upload file completed.");
+			_logViewModel.WriteLog($"Upload file completed. [{filePath}]");
 			return _;
 		}
 
@@ -166,8 +166,17 @@ namespace FileExplorer.Services {
 		public async Task<B2File> DeleteFileById(B2Client client, string fileId, string fileName) {
 			_logViewModel.WriteLog($"Delete file by id {fileId}...");
 			var _ = await client.Files.Delete(fileId, fileName);
-			_logViewModel.WriteLog($"Delete file completed.");
+			_logViewModel.WriteLog($"Delete file completed. [{fileName}]");
 			return _;
+		}
+
+		public async Task<B2File> AddFolder(B2Client client, string bucketId, string folderName) {
+			_logViewModel.WriteLog($"Create folder {folderName}...");
+			var fileName = $"{folderName}/.keep";
+			var fileData = new byte[] { };
+			var file = await client.Files.Upload(fileData, fileName, bucketId);
+			_logViewModel.WriteLog($"Folder created. [{folderName}]");
+			return file;
 		}
 	}
 }

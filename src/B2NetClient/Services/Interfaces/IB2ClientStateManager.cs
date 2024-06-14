@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace FileExplorer.Services.Interfaces {
 	public interface IB2ClientStateManager {
+		bool IsFetchingBucket { get; set; }
 		Dictionary<string, B2Files> DicB2Buckets { get; set; }
 		B2Client CurrentB2Client { get; }
 		string CurrentBucketId { get; set; }

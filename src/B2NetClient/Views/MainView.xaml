@@ -44,7 +44,6 @@
             Width="{Binding ActualWidth, ElementName=MainScreen}"
             Height="{Binding ActualHeight, ElementName=MainScreen}"
             Background="Transparent"
-            PreviewMouseDown="Border_PreviewMouseDown"
             Visibility="{Binding UploadFileDiablogVisibility, Mode=TwoWay}">
             <Border.Resources>
                 <DataTemplate DataType="{x:Type fileUploadVM:FileUploadViewModel}">

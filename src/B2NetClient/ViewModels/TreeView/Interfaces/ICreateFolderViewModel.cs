@@ -7,5 +7,6 @@ using System.Threading.Tasks;
 
 namespace FileExplorer.ViewModels.TreeView.Interfaces {
 	internal interface ICreateFolderViewModel : IViewModelBase{
+		event EventHandler<CreateFolderViewModel> OnRequestViewClosed;
 	}
 }

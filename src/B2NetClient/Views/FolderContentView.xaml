@@ -13,84 +13,88 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Border HorizontalAlignment="Right">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
+        <StackPanel>
+            <Border HorizontalAlignment="Right">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
 
-                <Button
-                    Margin="5"
-                    Command="{Binding AddFolderCommand}"
-                    ToolTip="Add folder">
+                    <Button
+                        Margin="5"
+                        Command="{Binding AddFolderCommand}"
+                        ToolTip="Add folder">
 
-                    <StackPanel Margin="5" Orientation="Horizontal">
+                        <StackPanel Margin="5" Orientation="Horizontal">
 
-                        <fa:ImageAwesome
-                            Height="10"
-                            Margin="5"
-                            Icon="Plus" />
+                            <fa:ImageAwesome
+                                Height="10"
+                                Margin="5"
+                                Icon="Plus" />
 
-                        <TextBlock Text="Add folder" />
-                    </StackPanel>
+                            <TextBlock Text="Add folder" />
+                        </StackPanel>
 
-                </Button>
+                    </Button>
 
-                <Button
-                    Grid.Column="1"
-                    Margin="5"
-                    Command="{Binding UploadCommand}"
-                    ToolTip="Upload file">
-                    <StackPanel Margin="5" Orientation="Horizontal">
+                    <Button
+                        Grid.Column="1"
+                        Margin="5"
+                        Command="{Binding UploadCommand}"
+                        ToolTip="Upload file">
+                        <StackPanel Margin="5" Orientation="Horizontal">
 
-                        <fa:ImageAwesome
-                            Height="10"
-                            Margin="5"
-                            Icon="Upload" />
+                            <fa:ImageAwesome
+                                Height="10"
+                                Margin="5"
+                                Icon="Upload" />
 
-                        <TextBlock Text="Upload File" />
-                    </StackPanel>
-                </Button>
+                            <TextBlock Text="Upload File" />
+                        </StackPanel>
+                    </Button>
 
-                <Button
-                    Grid.Column="2"
-                    Margin="5"
-                    Command="{Binding DownloadCommand}"
-                    ToolTip="Download files">
+                    <Button
+                        Grid.Column="2"
+                        Margin="5"
+                        Command="{Binding DownloadCommand}"
+                        ToolTip="Download files">
 
-                    <StackPanel Margin="5" Orientation="Horizontal">
+                        <StackPanel Margin="5" Orientation="Horizontal">
 
-                        <fa:ImageAwesome
-                            Height="10"
-                            Margin="5"
-                            Icon="Download" />
+                            <fa:ImageAwesome
+                                Height="10"
+                                Margin="5"
+                                Icon="Download" />
 
-                        <TextBlock Text="Download files" />
-                    </StackPanel>
+                            <TextBlock Text="Download files" />
+                        </StackPanel>
 
-                </Button>
+                    </Button>
 
-                <Button
-                    Grid.Column="3"
-                    Margin="5"
-                    Command="{Binding DeleteCommand}"
-                    ToolTip="Delete files">
-                    <StackPanel Margin="5" Orientation="Horizontal">
+                    <Button
+                        Grid.Column="3"
+                        Margin="5"
+                        Command="{Binding DeleteCommand}"
+                        ToolTip="Delete files">
+                        <StackPanel Margin="5" Orientation="Horizontal">
 
-                        <fa:ImageAwesome
-                            Height="10"
-                            Margin="5"
-                            Icon="Trash" />
+                            <fa:ImageAwesome
+                                Height="10"
+                                Margin="5"
+                                Icon="Trash" />
 
-                        <TextBlock Text="Delete files" />
-                    </StackPanel>
-                </Button>
-            </Grid>
-        </Border>
+                            <TextBlock Text="Delete files" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+        </StackPanel>
 
         <ListBox Grid.Row="1" ItemsSource="{Binding Entries}">
             <ListBox.Resources>

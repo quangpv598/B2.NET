@@ -3,22 +3,24 @@
     using Caliburn.Micro;
 	using FileExplorer.Help;
 	using FileExplorer.Models;
-    using FileExplorer.Services.Interfaces;
+	using FileExplorer.Services.Interfaces;
     using FileExplorer.ViewModels.TreeView.Interfaces;
+	using System.Windows;
 
     internal class FolderViewModel : ViewModelBase, IFolderViewModel
     {
+		private readonly IB2ClientStateManager _clientStateManager;
         private readonly IEventAggregator eventAggregator;
 
         private readonly IFileSystemService fileSystemService;
 
-        public FolderViewModel(IEventAggregator eventAggregator, IFileSystemService fileSystemService)
-        {
-            this.eventAggregator = eventAggregator;
-            this.fileSystemService = fileSystemService;
-        }
+		public FolderViewModel(IEventAggregator eventAggregator, IFileSystemService fileSystemService, IB2ClientStateManager clientStateManager) {
+			this.eventAggregator = eventAggregator;
+			this.fileSystemService = fileSystemService;
+			_clientStateManager = clientStateManager;
+		}
 
-        public override string DisplayName => Folder.Name;
+		public override string DisplayName => Folder.Name;
 
         public IObservableCollection<IFolderViewModel> Folders { get; } = new BindableCollection<IFolderViewModel>();
 
@@ -74,7 +76,13 @@
             {
                 if (isSelected == value) return;
 
-                isSelected = value;
+
+				//if (_clientStateManager.IsFetchingBucket) {
+				//	//MessageBox.Show("Please wait to fetch the previous buckets until they have been completed.");
+				//	value = false;
+				//}
+
+				isSelected = value;
                 NotifyOfPropertyChange(() => IsSelected);
 
                 if (isSelected)

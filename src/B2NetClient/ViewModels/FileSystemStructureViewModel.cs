@@ -10,6 +10,7 @@
 	using GalaSoft.MvvmLight.Command;
 	using System;
 	using System.Threading.Tasks;
+	using System.Windows;
 	using System.Windows.Input;
 
 	internal class FileSystemStructureViewModel : ViewModelBase, IFileSystemStructureViewModel {
@@ -19,17 +20,19 @@
 		private readonly IFileSystemService _fileSystemService;
 		private readonly IB2ClientService _b2ClientService;
 		private readonly IFolderContentViewModel _folderContentViewModel;
+		private readonly IB2ClientStateManager _b2ClientStateManager;
 
 		private B2Client _currentB2Client => _currentB2ClientStateManager.CurrentB2Client;
 
 		public ICommand RefreshCommand { get; private set; }
 
-		public FileSystemStructureViewModel(IFileSystemService fileSystemService, IAuthenticationViewModel authenticationViewModel, IB2ClientService b2ClientService, IFolderContentViewModel folderContentViewModel, IB2ClientStateManager currentB2ClientStateManager) {
+		public FileSystemStructureViewModel(IFileSystemService fileSystemService, IAuthenticationViewModel authenticationViewModel, IB2ClientService b2ClientService, IFolderContentViewModel folderContentViewModel, IB2ClientStateManager currentB2ClientStateManager, IB2ClientStateManager b2ClientStateManager) {
 			_fileSystemService = fileSystemService;
 			_authenticationViewModel = authenticationViewModel;
 			_b2ClientService = b2ClientService;
 			_folderContentViewModel = folderContentViewModel;
 			_currentB2ClientStateManager = currentB2ClientStateManager;
+			_b2ClientStateManager = b2ClientStateManager;
 
 			_authenticationViewModel.OnApplicationKeysSelected += _authenticationViewModel_OnApplicationKeysSelected;
 			fileSystemService.B2ClientService.OnBucketsFetched += B2ClientService_OnBucketsFetched;
@@ -39,6 +42,7 @@
 
 		private void RefreshBuckets() {
 			Utils.InvokeIfNeed(async () => {
+
 				if (_currentB2Client != null) {
 					_folderContentViewModel.Entries.Clear();
 					Drives?.Clear();

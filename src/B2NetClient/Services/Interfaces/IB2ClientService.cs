@@ -15,5 +15,6 @@ namespace FileExplorer.Services.Interfaces {
 		Task<B2File> DownloadFileById(B2Client client, string fileId);
 		Task<B2File> UploadFile(B2Client client, string bucketId, string folderName, string filePath);
 		Task<B2File> DeleteFileById(B2Client client, string fileId, string fileName);
+		Task<B2File> AddFolder(B2Client client, string bucketId, string folderName);
 	}
 }

@@ -5,15 +5,13 @@
     xmlns:Caliburn="http://www.caliburnproject.org"
     xmlns:ViewModels="clr-namespace:FileExplorer.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:local="clr-namespace:FileExplorer.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="AuthentView"
     d:DataContext="{d:DesignInstance ViewModels:AuthenticationViewModel}"
     mc:Ignorable="d">
-    <Border
-        Margin="0,24,0,0"
-        BorderBrush="Gray"
-        BorderThickness="1">
+    <Border BorderBrush="Gray" BorderThickness="1">
         <StackPanel>
             <Border
                 Padding="20"
@@ -58,21 +56,26 @@
                 <TextBlock Text="Applications Key" />
 
                 <ListBox
-                    Margin="0,15,0,0"
+                    Margin="0,5,0,0"
+                    HorizontalAlignment="Stretch"
                     BorderThickness="0"
                     ItemsSource="{Binding ApplicationKeys}"
                     SelectedItem="{Binding SelectedClient}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <DockPanel>
-                                <DockPanel.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Command="{Binding EditCommand}" Header="Edit" />
-                                        <MenuItem Command="{Binding DeleteCommand}" Header="Delete" />
-                                    </ContextMenu>
-                                </DockPanel.ContextMenu>
+                            <StackPanel
+                                Margin="5"
+                                HorizontalAlignment="Stretch"
+                                Orientation="Horizontal">
                                 <TextBlock Text="{Binding AppId}" />
-                            </DockPanel>
+
+                                <Button Margin="20,0,0,0" Command="{Binding DeleteCommand}">
+                                    <fa:ImageAwesome
+                                        Height="10"
+                                        Margin="5"
+                                        Icon="Trash" />
+                                </Button>
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
