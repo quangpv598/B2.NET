@@ -24,6 +24,8 @@ namespace FileExplorer.ViewModels {
 			set {
 				_selectedClient = value;
 				NotifyOfPropertyChange(() => SelectedClient);
+
+				_selectedClient.ClickCommand.Execute(null);
 			}
 		}
 
