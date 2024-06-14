@@ -6,6 +6,7 @@
 	using System.Linq;
 	using System.Threading.Tasks;
 	using System.Windows.Shapes;
+	using B2Net;
 	using B2Net.Models;
 	using FileExplorer.Factories.Interfaces;
 	using FileExplorer.Models;
@@ -18,6 +19,7 @@
 
 	internal class FileSystemService : IFileSystemService {
 		private Dictionary<string, B2Files> dicB2Buckets = new Dictionary<string, B2Files>();
+		private B2Client b2Client;
 
 		private readonly IB2ClientService b2ClientService;
 		private readonly IFileSystemFactory fileSystemFactory;
@@ -31,7 +33,9 @@
 
 		public async Task<IEnumerable<IDriveViewModel>> GetDrives(List<B2Bucket> buckets) {
 			foreach (var bucket in buckets) {
-				dicB2Buckets.Add(bucket.BucketId, null);
+				if (!dicB2Buckets.ContainsKey(bucket.BucketId)) {
+					dicB2Buckets.Add(bucket.BucketId, null);
+				}
 			}
 			return buckets.Select(fileSystemFactory.MakeDrive);
 		}
@@ -105,7 +109,7 @@
 			B2Files b2Files = dicB2Buckets.ContainsKey(bucketId) ? dicB2Buckets[bucketId] : null;
 
 			if (b2Files == null) {
-				var files = await b2ClientService.FetchFilesBaseOnBucketIdAsync(path);
+				var files = await b2ClientService.FetchFilesBaseOnBucketIdAsync(b2Client, path);
 				if (files == null) return null;
 				b2Files = ConvertFilesToDictionary(path, files);
 			}
@@ -136,6 +140,12 @@
 				}
 			}
 			return b2File;
+		}
+
+		public async Task FetchBuckets(B2Client b2Client) {
+			this.b2Client = b2Client;
+			dicB2Buckets.Clear();
+			await b2ClientService.FetchB2Buckets(this.b2Client);
 		}
 	}
 }

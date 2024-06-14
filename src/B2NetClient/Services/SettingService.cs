@@ -72,15 +72,15 @@ namespace FileExplorer.Services {
 		private readonly IJsonSettingsLocalFileService<ApplicationSettings> _jsonSettingsLocalFileService;
 		public ApplicationSettings ApplicationSettings { get; set; } = new ApplicationSettings();
 
-		public SettingsService(IJsonSettingsLocalFileService<ApplicationSettings> jsonSettingsLocalFileService,
-			string path) {
-			try {
-				var dir = System.IO.Path.GetDirectoryName(path);
-				if (!Directory.Exists(dir)) {
-					Directory.CreateDirectory(dir);
-				}
-			}
-			catch { }
+		public SettingsService(IJsonSettingsLocalFileService<ApplicationSettings> jsonSettingsLocalFileService) {
+			string path = "app.settings";
+			//try {
+			//	var dir = System.IO.Path.GetDirectoryName(path);
+			//	if (!Directory.Exists(dir)) {
+			//		Directory.CreateDirectory(dir);
+			//	}
+			//}
+			//catch { }
 
 			_jsonSettingsLocalFileService = jsonSettingsLocalFileService;
 			_path = path;
@@ -171,6 +171,6 @@ namespace FileExplorer.Services {
 	}
 
 	public class ApplicationSettings {
-		public IList<Client> Clients { get; set; }	= new List<Client>();
+		public IList<ApplicationKeys> ApplicationKeys { get; set; }	= new List<ApplicationKeys>();
 	}
 }

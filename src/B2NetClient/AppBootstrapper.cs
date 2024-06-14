@@ -32,15 +32,17 @@
 
         protected override void Configure()
         {
-            // Register Services
-            container.Singleton<IEventAggregator, EventAggregator>();
+			// Register Services
+			// Application Settings
+			container.Singleton<IFileService, LocalFileService>();
+			container.Singleton<IJsonSettingsLocalFileService<ApplicationSettings>, JsonSettingsLocalFileService<ApplicationSettings>>();
+			container.Singleton<SettingsService>();
+			container.Singleton<IEventAggregator, EventAggregator>();
             container.Singleton<IWindowManager, WindowManager>();
 			container.Singleton<IB2ClientService, B2ClientService>();
 			container.Singleton<IFileSystemService, FileSystemService>();
             container.Singleton<IFileSystemFactory, FileSystemFactory>();
             container.Singleton<IFileIconService, FileIconService>();
-			container.Singleton<IAuthentService, AuthentService>();
-			container.Singleton<SettingsService>();
 
 			// Register ViewModels
 			container.Singleton<IShellViewModel, ShellViewModel>();

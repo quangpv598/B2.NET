@@ -39,7 +39,7 @@
             <StackPanel Margin="20">
                 <TextBlock Text="Applications" />
 
-                <ListBox BorderThickness="0" ItemsSource="{Binding Clients}">
+                <ListBox BorderThickness="0" ItemsSource="{Binding ApplicationKeys}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Button Width="200" Command="{Binding ClickCommand}">

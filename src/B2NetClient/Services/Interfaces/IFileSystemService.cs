@@ -1,6 +1,7 @@
 ﻿namespace FileExplorer.Services.Interfaces {
 	using System.Collections.Generic;
 	using System.Threading.Tasks;
+	using B2Net;
 	using B2Net.Models;
 	using FileExplorer.ViewModels.ListView.Interfaces;
 	using FileExplorer.ViewModels.TreeView.Interfaces;
@@ -16,5 +17,7 @@
 		Task<IEnumerable<IFileSystemObjectViewModel>> GetFileSystemObjects(string path);
 
 		//int GetDirectoryLength(string path);
+
+		Task FetchBuckets(B2Client b2Client);
 	}
 }

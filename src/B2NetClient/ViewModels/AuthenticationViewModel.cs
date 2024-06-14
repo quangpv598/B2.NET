@@ -1,6 +1,7 @@
 ﻿
 namespace FileExplorer.ViewModels {
 	using Caliburn.Micro;
+	using FileExplorer.Help;
 	using FileExplorer.Models;
 	using FileExplorer.Services;
 	using FileExplorer.Services.Interfaces;
@@ -15,11 +16,13 @@ namespace FileExplorer.ViewModels {
 	using System.Windows.Input;
 
 	internal class AuthenticationViewModel : ViewModelBase, IAuthenticationViewModel {
-		private IAuthentService _authentService;
+
+		private IB2ClientService _b2ClientService;
+
 		private SettingsService _settingsService;
 
-		private ClientViewModel _selectedClient;
-		public ClientViewModel SelectedClient {
+		private ApplicationKeysViewModel _selectedClient;
+		public ApplicationKeysViewModel SelectedClient {
 			get { return _selectedClient; }
 			set {
 				_selectedClient = value;
@@ -54,56 +57,68 @@ namespace FileExplorer.ViewModels {
 			}
 		}
 
-		public ObservableCollection<ClientViewModel> Clients { get; set; }
+		public event EventHandler<ApplicationKeysViewModel> OnApplicationKeysSelected;
 
-		public AuthenticationViewModel(IAuthentService authentService, SettingsService settingsService) {
-			_authentService = authentService;
+		public ObservableCollection<ApplicationKeysViewModel> ApplicationKeys { get; set; }
+
+		public AuthenticationViewModel(SettingsService settingsService, IB2ClientService b2ClientService) {
 			_settingsService = settingsService;
+			_b2ClientService = b2ClientService;
 
-			Clients = new ObservableCollection<ClientViewModel>();
+			ApplicationKeys = new ObservableCollection<ApplicationKeysViewModel>();
 
 			var settings = settingsService.LoadSettings();
 
-			if (settings.Clients is null || !settings.Clients.Any()) return;
+			if (settings.ApplicationKeys is null || !settings.ApplicationKeys.Any()) return;
 
-			foreach (var client in settings.Clients) {
-				var clientVM = new ClientViewModel(client);
+			foreach (var client in settings.ApplicationKeys) {
+				var clientVM = new ApplicationKeysViewModel(client);
 
 				clientVM.EditEvent += EditAccount;
 				clientVM.DeleteEvent += DeleteAccount;
+				clientVM.SelectEvent += (s, e) => Task.Run(() => {
+					OnApplicationKeysSelected?.Invoke(s, e);
+				});
 
-				Clients.Add(clientVM);
+				ApplicationKeys.Add(clientVM);
 			}
 		}
 
 		public async Task SaveAccountCommand() {
 			try {
-				var client = await _authentService.Authent(AppId, AppKey);
-
-
+				var client = await _b2ClientService.Connect(AppId, AppKey);				
 				if (!IsEditting) {
-					if (Clients.Any(c => Equals(AppId, c.AppId))){
+					if (ApplicationKeys.Any(c => Equals(AppId, c.AppId))) {
 						MessageBox.Show("The AppId is duplicated with previous one", "Warning", MessageBoxButton.OK);
 						return;
 					}
 
-					_settingsService.ApplicationSettings.Clients.Add(client);
-					//	_settingsService.SaveChanges();
+					var newApplications = new ApplicationKeys {
+						AppId = AppId,
+						AppKey = AppKey
+					};
 
-					var clientVM = new ClientViewModel(client);
+					_settingsService.ApplicationSettings.ApplicationKeys.Add(newApplications);
+					_settingsService.SaveChanges();
 
-					clientVM.EditEvent += EditAccount;
-					clientVM.DeleteEvent += DeleteAccount;
+					var applicationKeyVM = new ApplicationKeysViewModel(newApplications);
+					applicationKeyVM.B2Client = client;
 
-					Clients.Add(clientVM);
+					applicationKeyVM.EditEvent += EditAccount;
+					applicationKeyVM.DeleteEvent += DeleteAccount;
+					applicationKeyVM.SelectEvent += (s, e) => Task.Run(() => {
+						OnApplicationKeysSelected?.Invoke(s, e);
+					});
+
+					ApplicationKeys.Add(applicationKeyVM);
 				}
 				else {
-					if (Clients.Any(c => Equals(AppId, c.AppId) && !Equals(SelectedClient.Id, c.Id))) {
+					if (ApplicationKeys.Any(c => Equals(AppId, c.AppId) && !Equals(SelectedClient.Id, c.Id))) {
 						MessageBox.Show("The AppId is duplicated with previous one", "Warning", MessageBoxButton.OK);
 						return;
 					}
 
-					var currentClient = _settingsService.ApplicationSettings.Clients.FirstOrDefault(c => Equals(c.Id, SelectedClient.Id));
+					var currentClient = _settingsService.ApplicationSettings.ApplicationKeys.FirstOrDefault(c => Equals(c.Id, SelectedClient.Id));
 
 					currentClient.AppId = AppId;
 					currentClient.AppKey = AppKey;
@@ -125,22 +140,22 @@ namespace FileExplorer.ViewModels {
 			}
 		}
 
-		public void EditAccount(object sender, ClientViewModel client) {
+		public void EditAccount(object sender, ApplicationKeysViewModel applicationKey) {
 			IsEditting = true;
 
-			AppId = client.AppId;
-			AppKey = client.AppKey;
+			AppId = applicationKey.AppId;
+			AppKey = applicationKey.AppKey;
 
-			SelectedClient = client;
+			SelectedClient = applicationKey;
 		}
 
-		public void DeleteAccount(object sender, ClientViewModel client) {
+		public void DeleteAccount(object sender, ApplicationKeysViewModel applicationKey) {
 			var res = MessageBox.Show("Are you sure to delete this account?", "Warning", MessageBoxButton.YesNo);
 
 			if (res == MessageBoxResult.Yes) {
-				Clients.Remove(client);
+				ApplicationKeys.Remove(applicationKey);
 
-				_settingsService.ApplicationSettings.Clients.Remove(client.Model);
+				_settingsService.ApplicationSettings.ApplicationKeys.Remove(applicationKey.Model);
 				_settingsService.SaveChanges();
 			}
 		}
