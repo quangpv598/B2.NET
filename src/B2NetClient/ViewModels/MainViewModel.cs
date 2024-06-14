@@ -31,9 +31,11 @@
 			IFolderContentViewModel folderContentViewModel,
 			IAuthenticationViewModel authenticationViewModel,
 			IFileUploadViewModel fileUploadViewModel,
-			ICreateFolderViewModel createFolderViewModel) {
+			ICreateFolderViewModel createFolderViewModel,
+			ILogViewModel logViewModel) {
 
 			AuthenticationViewModel = authenticationViewModel;
+			LogViewModel = logViewModel;
 			FileSystemStructureViewModel = fileSystemStructureViewModel;
 			FolderContentViewModel = folderContentViewModel;
 			FileUploadViewModel = fileUploadViewModel;
@@ -50,6 +52,7 @@
 		public IFolderContentViewModel FolderContentViewModel { get; }
 
 		public IAuthenticationViewModel AuthenticationViewModel { get; }
+		public ILogViewModel LogViewModel { get; }
 
 		public IFileUploadViewModel FileUploadViewModel { get; }
 

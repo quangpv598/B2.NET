@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:treeView="clr-namespace:FileExplorer.Views.TreeView"
     xmlns:treeViewVM="clr-namespace:FileExplorer.ViewModels.TreeView"
+    xmlns:views="clr-namespace:FileExplorer.Views"
     x:Name="MainScreen"
     d:DataContext="{d:DesignInstance ViewModels:MainViewModel}"
     mc:Ignorable="d">
@@ -24,7 +25,10 @@
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
-        <ContentControl Caliburn:View.Model="{Binding AuthenticationViewModel}" />
+        <Grid>
+            <ContentControl Caliburn:View.Model="{Binding AuthenticationViewModel}" />
+            <views:LogView Caliburn:View.Model="{Binding LogViewModel}" />
+        </Grid>
 
         <GridSplitter Grid.Column="1" />
 

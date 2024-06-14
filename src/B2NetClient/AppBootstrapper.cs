@@ -49,7 +49,8 @@
 			container.Singleton<IShellViewModel, ShellViewModel>();
             container.Singleton<IMainViewModel, MainViewModel>();
 			container.Singleton<IAuthenticationViewModel, AuthenticationViewModel>();
-            container.Singleton<IFileSystemStructureViewModel, FileSystemStructureViewModel>();
+			container.Singleton<ILogViewModel, LogViewModel>();
+			container.Singleton<IFileSystemStructureViewModel, FileSystemStructureViewModel>();
             container.Singleton<ViewModels.Interfaces.IFolderContentViewModel, ViewModels.FolderContentViewModel>();
 
             // FileSystem ViewModels

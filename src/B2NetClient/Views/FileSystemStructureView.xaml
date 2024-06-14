@@ -20,11 +20,20 @@
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <Button Command="{Binding RefreshCommand}" DockPanel.Dock="Right">
-                    <fa:ImageAwesome
-                        Height="10"
-                        Margin="5"
-                        Icon="Refresh" />
+                <Button
+                    Margin="5"
+                    Command="{Binding RefreshCommand}"
+                    DockPanel.Dock="Right">
+                    <StackPanel Margin="5" Orientation="Horizontal">
+
+
+                        <fa:ImageAwesome
+                            Height="10"
+                            Margin="5"
+                            Icon="Refresh" />
+
+                        <TextBlock Text="Refresh Buckets" />
+                    </StackPanel>
                 </Button>
             </Grid>
         </Border>

@@ -100,6 +100,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\LogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\TreeView\CreateFolderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -167,6 +171,7 @@
     <Compile Include="ViewModels\Clients\ApplicationKeysViewModel.cs" />
     <Compile Include="ViewModels\Clients\Interfaces\IClientViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IAuthenticationViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ILogViewModel.cs" />
     <Compile Include="ViewModels\ListView\FileSystemObjectViewModel.cs" />
     <Compile Include="ViewModels\ListView\FileUploadViewModel.cs" />
     <Compile Include="ViewModels\ListView\FileViewModel.cs" />
@@ -176,6 +181,7 @@
     <Compile Include="ViewModels\ListView\Interfaces\IFileUploadViewModel.cs" />
     <Compile Include="ViewModels\ListView\Interfaces\IFileViewModel.cs" />
     <Compile Include="ViewModels\ListView\Interfaces\IFolderViewModel.cs" />
+    <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\TreeView\CreateFolderViewModel.cs" />
     <Compile Include="ViewModels\TreeView\DriveViewModel.cs" />
     <Compile Include="ViewModels\TreeView\FolderViewModel.cs" />
@@ -194,6 +200,9 @@
     </Compile>
     <Compile Include="Views\FolderContentView.xaml.cs">
       <DependentUpon>FolderContentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogView.xaml.cs">
+      <DependentUpon>LogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TreeView\CreateFolderView.xaml.cs">
       <DependentUpon>CreateFolderView.xaml</DependentUpon>
