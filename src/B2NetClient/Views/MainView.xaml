@@ -38,7 +38,7 @@
             Width="{Binding ActualWidth, ElementName=MainScreen}"
             Height="{Binding ActualHeight, ElementName=MainScreen}"
             Background="Transparent"
-            Visibility="{Binding UploadFileDiablogVisibility}">
+            Visibility="{Binding UploadFileDiablogVisibility, Mode=TwoWay}">
 			<listView:UploadFileView HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Border>
     </Grid>

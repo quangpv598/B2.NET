@@ -1,5 +1,7 @@
 ﻿namespace FileExplorer.ViewModels {
 	using FileExplorer.ViewModels.Interfaces;
+	using FileExplorer.ViewModels.ListView;
+	using FileExplorer.ViewModels.ListView.Interfaces;
 	using System;
 	using System.Windows;
 
@@ -17,12 +19,13 @@
 		public MainViewModel(
 			IFileSystemStructureViewModel fileSystemStructureViewModel,
 			IFolderContentViewModel folderContentViewModel,
-			IAuthenticationViewModel authenticationViewModel) {
+			IAuthenticationViewModel authenticationViewModel,
+			IFileUploadViewModel fileUploadViewModel) {
 
 			AuthenticationViewModel = authenticationViewModel;
 			FileSystemStructureViewModel = fileSystemStructureViewModel;
 			FolderContentViewModel = folderContentViewModel;
-
+			FileUploadViewModel = fileUploadViewModel;
 			UploadFileDiablogVisibility = Visibility.Collapsed;
 
 			FolderContentViewModel.OnUploadButtonClickEvent += HandleUploadFileDiablogShow;
@@ -34,10 +37,10 @@
 
 		public IAuthenticationViewModel AuthenticationViewModel { get; }
 
+		public IFileUploadViewModel FileUploadViewModel { get; }
+
 		private void HandleUploadFileDiablogShow(object sender, EventArgs e) {
-			UploadFileDiablogVisibility = UploadFileDiablogVisibility is Visibility.Visible
-				? Visibility.Collapsed 
-				: Visibility.Visible;
+			UploadFileDiablogVisibility = Visibility.Visible;
 		}
 
 		public void Dispose() {

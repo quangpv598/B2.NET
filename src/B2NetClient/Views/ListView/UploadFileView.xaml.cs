@@ -21,14 +21,5 @@ namespace FileExplorer.Views.ListView {
 		public UploadFileView() {
 			InitializeComponent();
 		}
-
-		private void ImagePanel_Drop(object sender, DragEventArgs e) {
-
-			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
-				// Note that you can have more than one file.
-				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-			}
-		}
 	}
 }
