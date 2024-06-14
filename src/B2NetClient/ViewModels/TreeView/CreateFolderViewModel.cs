@@ -36,16 +36,18 @@
 		}
 
 		private void Save() {
-			Task.Run(() => {
+			Task.Run(async () => {
 				OnRequestViewClosed?.Invoke(this, null);
 
 				string currentFolder = string.IsNullOrEmpty(_b2ClientStateManager.CurrentFolder) ? FolderName : $"{_b2ClientStateManager.CurrentFolder.Replace($"{_b2ClientStateManager.CurrentBucketId}/", "")}/{FolderName}";
 
-				var file = _b2ClientService.AddFolder(_b2ClientStateManager.CurrentB2Client,
+				var file = await _b2ClientService.AddFolder(_b2ClientStateManager.CurrentB2Client,
 					_b2ClientStateManager.CurrentBucketId,
 					currentFolder);
 
 				FolderName = string.Empty;
+
+				MessageBox.Show("If the viewfinder was not updated, please click Refresh Buckets.");
 			});
 		}
 

@@ -12,6 +12,7 @@
 	using Ookii.Dialogs.Wpf;
 	using System;
 	using System.ComponentModel;
+	using System.IO;
 	using System.Linq;
 	using System.Threading;
 	using System.Threading.Tasks;
@@ -136,18 +137,49 @@
 				var dialog = new VistaFolderBrowserDialog();
 				dialog.Description = "Please select a folder to save files.";
 				dialog.UseDescriptionForTitle = true; // This applies to the Vista style dialog only, not the old dialog.
+				
 
 				if ((bool)dialog.ShowDialog()) {
+
+					_downloadFilesPath = dialog.SelectedPath;
+
 					var selectedItems = Entries.Where(item => item.IsSelected);
 					var numberOfItems = selectedItems.Count();
 					for (int i = 0; i < numberOfItems; i++) {
 
 						var item = selectedItems.ElementAt(i);
-						var file = await _b2ClientService.DownloadFileById((B2Net.B2Client)this.B2ClientStateManager.CurrentB2Client, item.Model.FileId);
-						try {
-							System.IO.File.WriteAllBytes(System.IO.Path.Combine(_downloadFilesPath, (string)file.FileName), (byte[])file.FileData);
+
+						if (item is FileViewModel) {
+							var file = await _b2ClientService.DownloadFileById((B2Net.B2Client)this.B2ClientStateManager.CurrentB2Client, item.Model.FileId);
+							try {
+								System.IO.File.WriteAllBytes(System.IO.Path.Combine(_downloadFilesPath, (string)file.FileName), (byte[])file.FileData);
+							}
+							catch (Exception ex) { }
 						}
-						catch (Exception ex) { }
+						else if (item is FolderViewModel) {
+							var bucketId = item.Model.Path.Split('/').FirstOrDefault();
+							if (bucketId != null) {
+								if (this.B2ClientStateManager.DicB2Buckets.ContainsKey(bucketId)) {
+									var files = Enumerable.Where<B2Net.Models.B2File>(this.B2ClientStateManager.DicB2Buckets[bucketId].B2FileList.Files, (Func<B2Net.Models.B2File, bool>)(f => $"{bucketId}/{f.FileName}".StartsWith($"{item.Model.Path}/")));
+									foreach (var file in files) {
+										var result = await _b2ClientService.DownloadFileById((B2Net.B2Client)this.B2ClientStateManager.CurrentB2Client, file.FileId);
+										try {
+											string filePath = System.IO.Path.Combine(_downloadFilesPath, (string)file.FileName);
+
+											string directoryPath = System.IO.Path.GetDirectoryName(filePath);
+											if (!Directory.Exists(directoryPath)) {
+												Directory.CreateDirectory(directoryPath);
+											}
+
+											System.IO.File.WriteAllBytes(filePath, (byte[])result.FileData);
+										}
+										catch (Exception ex) { }
+									}
+								}
+							}
+						}
+
+						
 					}
 				}
 			}));
@@ -199,8 +231,10 @@
 							}
 						}
 					}
-
 				}
+
+
+				MessageBox.Show("If the viewfinder was not updated, please click Refresh Buckets.");
 			}));
 		}
 
