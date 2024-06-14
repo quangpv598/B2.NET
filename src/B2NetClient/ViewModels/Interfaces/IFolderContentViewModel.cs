@@ -8,6 +8,9 @@ namespace FileExplorer.ViewModels.Interfaces
     internal interface IFolderContentViewModel : IViewModelBase
     {
 		public event EventHandler OnUploadButtonClickEvent;
+
+		public event EventHandler OnCreateFolderButtonClickEvent;
+
 		IObservableCollection<IFileSystemObjectViewModel> Entries { get; }
 	}
 }

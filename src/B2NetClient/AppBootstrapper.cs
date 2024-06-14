@@ -58,6 +58,7 @@
             container.PerRequest<IFileViewModel, FileViewModel>();
             container.PerRequest<IListViewFolder, ListViewFolder>();
 			container.Singleton<IFileUploadViewModel, FileUploadViewModel>();
+			container.Singleton<ICreateFolderViewModel, CreateFolderViewModel>();
         }
 
         protected override object GetInstance(Type service, string key) => container.GetInstance(service, key);

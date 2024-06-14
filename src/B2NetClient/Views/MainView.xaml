@@ -5,8 +5,11 @@
     xmlns:Caliburn="http://www.caliburnproject.org"
     xmlns:ViewModels="clr-namespace:FileExplorer.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fileUploadVM="clr-namespace:FileExplorer.ViewModels.ListView"
     xmlns:listView="clr-namespace:FileExplorer.Views.ListView"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:treeView="clr-namespace:FileExplorer.Views.TreeView"
+    xmlns:treeViewVM="clr-namespace:FileExplorer.ViewModels.TreeView"
     x:Name="MainScreen"
     d:DataContext="{d:DesignInstance ViewModels:MainViewModel}"
     mc:Ignorable="d">
@@ -32,14 +35,27 @@
         <ContentControl Grid.Column="4" Caliburn:View.Model="{Binding FolderContentViewModel}" />
 
         <Border
-			x:Name="PopupBorder"
+            x:Name="PopupBorder"
             Grid.ColumnSpan="5"
-			PreviewMouseDown="Border_PreviewMouseDown"
             Width="{Binding ActualWidth, ElementName=MainScreen}"
             Height="{Binding ActualHeight, ElementName=MainScreen}"
             Background="Transparent"
+            PreviewMouseDown="Border_PreviewMouseDown"
             Visibility="{Binding UploadFileDiablogVisibility, Mode=TwoWay}">
-			<listView:UploadFileView HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Border.Resources>
+                <DataTemplate DataType="{x:Type fileUploadVM:FileUploadViewModel}">
+                    <listView:UploadFileView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type treeViewVM:CreateFolderViewModel}">
+                    <treeView:CreateFolderView />
+                </DataTemplate>
+            </Border.Resources>
+
+            <ContentControl
+                x:Name="contentControl"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{Binding CurrentDialog}" />
         </Border>
     </Grid>
 </UserControl>

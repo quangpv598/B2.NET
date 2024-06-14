@@ -1,20 +1,15 @@
 ﻿namespace FileExplorer.Services {
-	using System;
-	using System.Collections;
-	using System.Collections.Generic;
-	using System.IO;
-	using System.Linq;
-	using System.Threading.Tasks;
-	using System.Windows.Shapes;
 	using B2Net;
 	using B2Net.Models;
 	using FileExplorer.Factories.Interfaces;
 	using FileExplorer.Models;
 	using FileExplorer.Services.Interfaces;
-	using FileExplorer.ViewModels.Interfaces;
 	using FileExplorer.ViewModels.ListView.Interfaces;
 	using FileExplorer.ViewModels.TreeView.Interfaces;
-
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Threading.Tasks;
 	using IFolderViewModel = FileExplorer.ViewModels.TreeView.Interfaces.IFolderViewModel;
 
 	internal class FileSystemService : IFileSystemService {

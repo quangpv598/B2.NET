@@ -95,6 +95,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\TreeView\CreateFolderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ListView\FileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -132,6 +136,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Converters\PathToImageConverter.cs" />
+    <Compile Include="Converters\ProgressToWidthConverter.cs" />
     <Compile Include="Factories\FileSystemFactory.cs" />
     <Compile Include="Factories\Interfaces\IFileSystemFactory.cs" />
     <Compile Include="Help\FileDragDropHelper.cs" />
@@ -167,6 +172,7 @@
     <Compile Include="ViewModels\TreeView\CreateFolderViewModel.cs" />
     <Compile Include="ViewModels\TreeView\DriveViewModel.cs" />
     <Compile Include="ViewModels\TreeView\FolderViewModel.cs" />
+    <Compile Include="ViewModels\TreeView\Interfaces\ICreateFolderViewModel.cs" />
     <Compile Include="ViewModels\TreeView\Interfaces\IDriveViewModel.cs" />
     <Compile Include="ViewModels\TreeView\Interfaces\IFolderViewModel.cs" />
     <Compile Include="ViewModels\FileSystemStructureViewModel.cs" />
@@ -181,6 +187,9 @@
     </Compile>
     <Compile Include="Views\FolderContentView.xaml.cs">
       <DependentUpon>FolderContentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TreeView\CreateFolderView.xaml.cs">
+      <DependentUpon>CreateFolderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ListView\UploadFileView.xaml.cs">
       <DependentUpon>UploadFileView.xaml</DependentUpon>

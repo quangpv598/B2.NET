@@ -10,7 +10,10 @@
     x:Name="AuthentView"
     d:DataContext="{d:DesignInstance ViewModels:AuthenticationViewModel}"
     mc:Ignorable="d">
-    <Border BorderBrush="Gray" BorderThickness="1">
+    <Border
+        Margin="0,24,0,0"
+        BorderBrush="Gray"
+        BorderThickness="1">
         <StackPanel>
             <Border
                 Padding="20"

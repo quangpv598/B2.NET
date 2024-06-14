@@ -5,6 +5,7 @@
     xmlns:ViewModels="clr-namespace:FileExplorer.ViewModels.ListView">
     <DataTemplate DataType="{x:Type ViewModels:FileViewModel}">
         <StackPanel Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding IsSelected}" />
             <Image
                 Width="20"
                 Height="20"

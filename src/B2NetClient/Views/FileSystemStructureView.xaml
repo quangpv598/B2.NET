@@ -14,15 +14,19 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border>
-            <DockPanel>
+        <Border BorderBrush="Black" BorderThickness="0,0,1,0">
+            <Grid HorizontalAlignment="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
                 <Button Command="{Binding RefreshCommand}" DockPanel.Dock="Right">
                     <fa:ImageAwesome
                         Height="10"
                         Margin="5"
                         Icon="Refresh" />
                 </Button>
-            </DockPanel>
+            </Grid>
         </Border>
         <TreeView
             Grid.Row="1"

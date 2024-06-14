@@ -8,6 +8,7 @@
     using FileExplorer.ViewModels.ListView.Interfaces;
 	using GalaSoft.MvvmLight.CommandWpf;
 	using System;
+	using System.Linq;
 	using System.Windows.Input;
 
 	internal class FolderContentViewModel : ViewModelBase, IFolderContentViewModel, IHandle<Folder>
@@ -15,10 +16,11 @@
         private readonly IFileSystemService fileSystemService;
 
 		public ICommand UploadCommand { get; set; }
-		public ICommand RefreshCommand { get; set; }
-
+		public ICommand DownloadCommand { get; set; }
+		public ICommand AddFolderCommand { get; set; }
 
 		public event EventHandler OnUploadButtonClickEvent;
+		public event EventHandler OnCreateFolderButtonClickEvent;
 
 		public FolderContentViewModel(IEventAggregator eventAggreagtor, IFileSystemService fileSystemService)
         {
@@ -27,7 +29,8 @@
             this.fileSystemService = fileSystemService;
 
 			UploadCommand = new RelayCommand(Upload);
-			RefreshCommand = new RelayCommand(Refresh);
+			DownloadCommand = new RelayCommand(Download);
+			AddFolderCommand = new RelayCommand(AddFolder);
 		}
 
 		public IObservableCollection<IFileSystemObjectViewModel> Entries { get; } = new BindableCollection<IFileSystemObjectViewModel>();
@@ -62,8 +65,16 @@
 			OnUploadButtonClickEvent?.Invoke(this, EventArgs.Empty);
 		}
 
-		private void Refresh() {
+		private void Download() {
+			var selectedItems = Entries.Where(item => item.IsSelected);
 
+			foreach (var item in selectedItems) {
+
+			}
+		}
+
+		private void AddFolder() {
+			OnCreateFolderButtonClickEvent?.Invoke(this, EventArgs.Empty);
 		}
     }
 }

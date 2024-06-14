@@ -15,6 +15,7 @@
                 ShadowDepth="0.2"
                 Color="#1F2123" />
         </Border.Effect>
+
         <Grid Width="600" Height="600">
             <Border
                 Margin="5"
@@ -33,7 +34,7 @@
 
             <Grid
                 Name="ImagePanel"
-                utility:FileDragDropHelper.FileDragDropTarget="{Binding FileUploadViewModel}"
+                utility:FileDragDropHelper.FileDragDropTarget="{Binding}"
                 AllowDrop="true"
                 Background="Transparent" />
         </Grid>

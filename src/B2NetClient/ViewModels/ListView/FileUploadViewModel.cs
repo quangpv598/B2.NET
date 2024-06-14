@@ -1,13 +1,23 @@
-﻿using FileExplorer.ViewModels.ListView.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace FileExplorer.ViewModels.ListView {
+	using FileExplorer.ViewModels.ListView.Interfaces;
+	using System.Windows;
 
-namespace FileExplorer.ViewModels.ListView {
-	internal class FileUploadViewModel : IFileUploadViewModel, IFileDragDropTarget {
+	internal class FileUploadViewModel : ViewModelBase, IFileUploadViewModel, IFileDragDropTarget {
+		private Visibility _uploadVisibility;
+		public Visibility UploadVisibility { 
+			get => _uploadVisibility; 
+			set { 
+				_uploadVisibility = value; 
+				NotifyOfPropertyChange(() => UploadVisibility); 
+			} 
+		}
+
+		public FileUploadViewModel() {
+			UploadVisibility = Visibility.Visible;
+		}
+
 		public void OnFileDrop(string[] filepaths) {
+			UploadVisibility = Visibility.Collapsed;
 		}
 	}
 }

@@ -6,5 +6,7 @@
     internal interface IFileSystemObjectViewModel : IViewModelBase
     {
         FileSystemObject Model { get; set; }
-    }
+
+		bool IsSelected {get;set;}
+	}
 }
