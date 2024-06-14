@@ -39,24 +39,24 @@
             <StackPanel Margin="20">
                 <TextBlock Text="Applications" />
 
-                <ListBox BorderThickness="0" ItemsSource="{Binding ApplicationKeys}">
+                <ListBox
+                    BorderThickness="0"
+                    ItemsSource="{Binding ApplicationKeys}"
+                    SelectedItem="{Binding SelectedClient}">
+                    BorderThickness="0"
+                    ItemsSource="{Binding ApplicationKeys}"
+                    SelectedItem="{Binding SelectedClient}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Width="200" Command="{Binding ClickCommand}">
-                                <Button.Template>
-                                    <ControlTemplate>
-                                        <DockPanel>
-                                            <DockPanel.ContextMenu>
-                                                <ContextMenu>
-                                                    <MenuItem Command="{Binding EditCommand}" Header="Edit" />
-                                                    <MenuItem Command="{Binding DeleteCommand}" Header="Delete" />
-                                                </ContextMenu>
-                                            </DockPanel.ContextMenu>
-                                            <TextBlock Text="{Binding AppId}" />
-                                        </DockPanel>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
+                            <DockPanel>
+                                <DockPanel.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Command="{Binding EditCommand}" Header="Edit" />
+                                        <MenuItem Command="{Binding DeleteCommand}" Header="Delete" />
+                                    </ContextMenu>
+                                </DockPanel.ContextMenu>
+                                <TextBlock Text="{Binding AppId}" />
+                            </DockPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

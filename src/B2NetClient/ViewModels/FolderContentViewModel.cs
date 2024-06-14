@@ -7,6 +7,7 @@
     using FileExplorer.ViewModels.Interfaces;
     using FileExplorer.ViewModels.ListView.Interfaces;
 	using GalaSoft.MvvmLight.CommandWpf;
+	using System;
 	using System.Windows.Input;
 
 	internal class FolderContentViewModel : ViewModelBase, IFolderContentViewModel, IHandle<Folder>
@@ -17,6 +18,8 @@
 		public ICommand RefreshCommand { get; set; }
 
 
+		public event EventHandler OnUploadButtonClickEvent;
+
 		public FolderContentViewModel(IEventAggregator eventAggreagtor, IFileSystemService fileSystemService)
         {
             eventAggreagtor.Subscribe(this);
@@ -25,9 +28,9 @@
 
 			UploadCommand = new RelayCommand(Upload);
 			RefreshCommand = new RelayCommand(Refresh);
-        }
+		}
 
-        public IObservableCollection<IFileSystemObjectViewModel> Entries { get; } = new BindableCollection<IFileSystemObjectViewModel>();
+		public IObservableCollection<IFileSystemObjectViewModel> Entries { get; } = new BindableCollection<IFileSystemObjectViewModel>();
 
         private string path;
         public string Path
@@ -48,13 +51,15 @@
             }
         }
 
+
+
         public void Handle(Folder message)
         {
             Path = message.Path;
         }
 
 		private void Upload() {
-
+			OnUploadButtonClickEvent?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void Refresh() {
