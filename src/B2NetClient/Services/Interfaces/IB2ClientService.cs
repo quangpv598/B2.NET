@@ -13,7 +13,7 @@ namespace FileExplorer.Services.Interfaces {
 		Task<List<B2Bucket>> FetchB2Buckets(B2Client client);
 		Task<B2FileList> FetchFilesBaseOnBucketIdAsync(B2Client client, string bucketId);
 		Task<B2File> DownloadFileById(B2Client client, string fileId);
-		Task UploadLargeFile(B2Client client, string bucketId, string filePath);
+		Task<B2File> UploadFile(B2Client client, string bucketId, string folderName, string filePath);
 		Task<B2File> DeleteFileById(B2Client client, string fileId, string fileName);
 	}
 }
