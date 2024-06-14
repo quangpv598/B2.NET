@@ -90,7 +90,13 @@ namespace FileExplorer.Services {
 		}
 
 		private async Task<B2File> UploadLargeFile(B2Client client, string bucketId, string folderName, string filePath) {
-			var fileName = $"{folderName}/{Path.GetFileName(filePath)}";
+			var fileName = string.Empty;
+			if (string.IsNullOrEmpty(folderName)) {
+				fileName = Path.GetFileName(filePath);
+			}
+			else {
+				fileName = $"{folderName}/{Path.GetFileName(filePath)}";
+			}
 			FileStream fileStream = File.OpenRead(filePath);
 			byte[] c = null;
 			List<byte[]> parts = new List<byte[]>();
@@ -123,15 +129,20 @@ namespace FileExplorer.Services {
 			try {
 				start = await client.LargeFiles.StartLargeFile(fileName, "", bucketId);
 
+
 				for (int i = 0; i < parts.Count; i++) {
 					var uploadUrl = await client.LargeFiles.GetUploadPartUrl(start.FileId);
 					var part = await client.LargeFiles.UploadPart(parts[i], i + 1, uploadUrl);
+
+					double percent = ((i + 1) / parts.Count) * 100;
+					_logViewModel.WriteLog($"Upload file: {percent}%");
 				}
 
 				finish = await client.LargeFiles.FinishLargeFile(start.FileId, shas.ToArray());
 			}
 			catch (Exception e) {
 				await client.LargeFiles.CancelLargeFile(start.FileId);
+				_logViewModel.WriteLog(e.ToString());
 				Console.WriteLine(e);
 				throw;
 			}
@@ -140,7 +151,13 @@ namespace FileExplorer.Services {
 		}
 
 		private async Task<B2File> UploadSmallFile(B2Client client, string bucketId, string folderName, string filePath) {
-			var fileName = $"{folderName}/{Path.GetFileName(filePath)}";
+			var fileName = string.Empty;
+			if (string.IsNullOrEmpty(folderName)) {
+				fileName = Path.GetFileName(filePath);
+			}
+			else {
+				fileName = $"{folderName}/{Path.GetFileName(filePath)}";
+			}
 			var fileData = File.ReadAllBytes(filePath);
 			var file = await client.Files.Upload(fileData, fileName, bucketId);
 			return file;

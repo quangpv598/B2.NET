@@ -13,5 +13,6 @@
         MaxHeight="200"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Bottom"
-        Text="{Binding Log}" />
+        Text="{Binding Log}"
+        TextWrapping="Wrap" />
 </UserControl>

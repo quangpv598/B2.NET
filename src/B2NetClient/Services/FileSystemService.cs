@@ -57,6 +57,9 @@
 				string bucketId = isRootPath ? path : path.Split('/').FirstOrDefault();
 
 				if (isRootPath) {
+
+					b2ClientStateManager.CurrentBucketId = bucketId;
+
 					var directoriesInRootBucket = b2Files.DicFolder
 						.Where(d => !d.Key.Replace($"{bucketId}/", "").Contains("/"))
 						.Select(d => folderSelector(d.Key));
@@ -74,6 +77,9 @@
 
 				}
 				else {
+
+					b2ClientStateManager.CurrentFolder = path;
+
 					var filesAndFoldersInSubfolder = b2Files.DicFolder[path];
 
 					if (fileSelector != null) {
