@@ -14,17 +14,28 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border BorderBrush="Black" BorderThickness="0,0,1,0">
+        <Border
+            Margin="0,0,-0.25,0"
+            BorderBrush="Gray"
+            BorderThickness="0,0,1.2,0">
             <Grid HorizontalAlignment="Right">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <Button Command="{Binding RefreshCommand}" DockPanel.Dock="Right">
-                    <fa:ImageAwesome
-                        Height="10"
-                        Margin="5"
-                        Icon="Refresh" />
+                <Button
+                    Margin="5"
+                    Command="{Binding RefreshCommand}"
+                    DockPanel.Dock="Right">
+                    <StackPanel Margin="5" Orientation="Horizontal">
+
+                        <fa:ImageAwesome
+                            Height="10"
+                            Margin="5"
+                            Icon="Refresh" />
+
+                        <TextBlock Text="Refresh Buckets" />
+                    </StackPanel>
                 </Button>
             </Grid>
         </Border>

@@ -1,6 +1,7 @@
 ﻿using B2Net;
 using B2Net.Models;
 using FileExplorer.Services.Interfaces;
+using FileExplorer.ViewModels.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,29 +13,35 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace FileExplorer.Services {
-	public class B2ClientService : IB2ClientService {
+	internal class B2ClientService : IB2ClientService {
 
+		private readonly ILogViewModel _logViewModel;
 		public static readonly long MIN_PART_SIZE = 1024 * (5 * 1024);
 
-		public B2ClientService() {
+		public B2ClientService(ILogViewModel logViewModel) {
+			_logViewModel = logViewModel;
 		}
 
 		public event EventHandler<List<B2Bucket>> OnBucketsFetched;
 
 		public async Task<B2Client> Connect(string appId, string appKey) {
 			return await Task.Run(() => {
+				_logViewModel.WriteLog($"Connect to {appId}...");
 				var options = new B2Options() {
 					KeyId = appId,
 					ApplicationKey = appKey,
 					PersistBucket = false
 				};
 				var client = new B2Client(B2Client.Authorize(options));
+
+				_logViewModel.WriteLog($"[{appId}]-Connected");
 				return client;
 			});
 		}
 
 		public async Task<List<B2Bucket>> FetchB2Buckets(B2Client client) {
 			return await Task.Run(async () => {
+				_logViewModel.WriteLog($"Fetching buckets...");
 				List<B2Bucket> buckets = null;
 				if (client.Capabilities.BucketId == null) {
 					buckets = await client.Buckets.GetList();
@@ -47,29 +54,39 @@ namespace FileExplorer.Services {
 						}
 					};
 				}
+				_logViewModel.WriteLog($"Fetch buckets completed!");
 				OnBucketsFetched?.Invoke(this, buckets);
 				return buckets;
 			});
 		}
 
 		public async Task<B2FileList> FetchFilesBaseOnBucketIdAsync(B2Client client, string bucketId) {
-			return await client.Files.GetList(bucketId: bucketId);
+			_logViewModel.WriteLog($"Fetching files in buckets {bucketId}...");
+			var _ = await client.Files.GetList(bucketId: bucketId);
+			_logViewModel.WriteLog($"Fetch files completed.");
+			return _;
 		}
 
 		public async Task<B2File> DownloadFileById(B2Client client, string fileId) {
-			return await client.Files.DownloadById(fileId);
+			_logViewModel.WriteLog($"Downloading file by id {fileId}...");
+			var _ = await client.Files.DownloadById(fileId);
+			_logViewModel.WriteLog($"Download file completed.");
+			return _;
 		}
 
 		public async Task<B2File> UploadFile(B2Client client, string bucketId, string folderName, string filePath) {
 			var fileData = File.ReadAllBytes(filePath);
-
+			_logViewModel.WriteLog($"Uploading file {filePath}...");
 			const long minPartLength = 2;
+			B2File _;
 			if (fileData.Length < MIN_PART_SIZE * minPartLength) {
-				return await UploadSmallFile(client, bucketId, folderName, filePath);
+				_ = await UploadSmallFile(client, bucketId, folderName, filePath);
 			}
 			else {
-				return await UploadLargeFile(client, bucketId, folderName, filePath);
+				_ = await UploadLargeFile(client, bucketId, folderName, filePath);
 			}
+			_logViewModel.WriteLog($"Upload file completed.");
+			return _;
 		}
 
 		private async Task<B2File> UploadLargeFile(B2Client client, string bucketId, string folderName, string filePath) {
@@ -130,8 +147,10 @@ namespace FileExplorer.Services {
 		}
 
 		public async Task<B2File> DeleteFileById(B2Client client, string fileId, string fileName) {
-
-			return await client.Files.Delete(fileId, fileName);
+			_logViewModel.WriteLog($"Download file by id {fileId}...");
+			var _ = await client.Files.Delete(fileId, fileName);
+			_logViewModel.WriteLog($"Download file completed.");
+			return _;
 		}
 	}
 }
