@@ -147,9 +147,9 @@ namespace FileExplorer.Services {
 		}
 
 		public async Task<B2File> DeleteFileById(B2Client client, string fileId, string fileName) {
-			_logViewModel.WriteLog($"Download file by id {fileId}...");
+			_logViewModel.WriteLog($"Delete file by id {fileId}...");
 			var _ = await client.Files.Delete(fileId, fileName);
-			_logViewModel.WriteLog($"Download file completed.");
+			_logViewModel.WriteLog($"Delete file completed.");
 			return _;
 		}
 	}
