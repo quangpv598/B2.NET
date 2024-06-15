@@ -16,14 +16,16 @@
 		private Dictionary<string, B2Files> dicB2Buckets = new Dictionary<string, B2Files>();
 		private B2Client b2Client;
 
+		private readonly IB2ClientStateManager b2ClientStateManager;
 		private readonly IB2ClientService b2ClientService;
 		private readonly IFileSystemFactory fileSystemFactory;
 
 		public IB2ClientService B2ClientService => b2ClientService;
 
-		public FileSystemService(IFileSystemFactory fileSystemFactory, IB2ClientService b2ClientService) {
+		public FileSystemService(IFileSystemFactory fileSystemFactory, IB2ClientService b2ClientService, IB2ClientStateManager b2ClientStateManager) {
 			this.fileSystemFactory = fileSystemFactory;
 			this.b2ClientService = b2ClientService;
+			this.b2ClientStateManager = b2ClientStateManager;
 		}
 
 		public async Task<IEnumerable<IDriveViewModel>> GetDrives(List<B2Bucket> buckets) {
@@ -142,6 +144,7 @@
 			this.b2Client = b2Client;
 			dicB2Buckets.Clear();
 			await b2ClientService.FetchB2Buckets(this.b2Client);
+			b2ClientStateManager.DicB2Buckets = dicB2Buckets;
 		}
 	}
 }

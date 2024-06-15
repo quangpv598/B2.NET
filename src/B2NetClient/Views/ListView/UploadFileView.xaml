@@ -16,7 +16,7 @@
                 Color="#1F2123" />
         </Border.Effect>
 
-        <Grid Width="600" Height="600">
+        <Grid Width="400" Height="400">
             <Border
                 Margin="5"
                 BorderBrush="Gray"

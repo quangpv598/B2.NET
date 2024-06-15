@@ -4,6 +4,7 @@
 	using FileExplorer.Models;
 	using FileExplorer.Services.Interfaces;
 	using FileExplorer.ViewModels.Interfaces;
+	using FileExplorer.ViewModels.ListView;
 	using FileExplorer.ViewModels.ListView.Interfaces;
 	using GalaSoft.MvvmLight.CommandWpf;
 	using Ookii.Dialogs.Wpf;
@@ -17,7 +18,6 @@
 
 	internal class FolderContentViewModel : ViewModelBase, IFolderContentViewModel, IHandle<Folder> {
 
-		private int _downloadFilesPercent = 0;
 		private string _downloadFilesPath = string.Empty;
 
 		private readonly IB2ClientService _b2ClientService;
@@ -92,7 +92,6 @@
 						System.IO.File.WriteAllBytes(System.IO.Path.Combine(_downloadFilesPath, file.FileName), file.FileData);
 					}
 					catch (Exception ex) { }
-					_downloadFilesPercent = ((i + 1) / numberOfItems) * 100;
 				}
 			}
 		}
@@ -101,8 +100,40 @@
 			OnCreateFolderButtonClickEvent?.Invoke(this, EventArgs.Empty);
 		}
 
-		private void Delete() {
+		private async void Delete() {
 
+			if (MessageBox.Show("Are you sure to delete files?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No){
+				return;
+			}
+
+			var selectedItems = Entries.Where(item => item.IsSelected);
+			var numberOfItems = selectedItems.Count();
+			for (int i = 0; i < numberOfItems; i++) {
+
+				var item = selectedItems.ElementAt(i);
+
+				if (item is FileViewModel) {
+					var file = await _b2ClientService.DeleteFileById(_clientStateManager.CurrentB2Client, item.Model.FileId, item.Model.Path);
+					Utils.InvokeIfNeed(() => {
+						Entries.Remove(item);
+					});
+				}
+				else if (item is FolderViewModel) {
+					var bucketId = item.Model.Path.Split('/').FirstOrDefault();
+					if (bucketId != null) {
+						if (_clientStateManager.DicB2Buckets.ContainsKey(bucketId)) {
+							var files = _clientStateManager.DicB2Buckets[bucketId].B2FileList.Files.Where(f => $"{bucketId}/{f.FileName}".StartsWith($"{item.Model.Path}/"));
+							foreach (var file in files) {
+								await _b2ClientService.DeleteFileById(_clientStateManager.CurrentB2Client, file.FileId, file.FileName);
+								Utils.InvokeIfNeed(() => {
+									Entries.Remove(item);
+								});
+							}
+						}
+					}
+				}
+
+			}
 		}
 
 	}

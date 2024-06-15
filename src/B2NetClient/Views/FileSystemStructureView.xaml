@@ -29,6 +29,7 @@
                     DockPanel.Dock="Right">
                     <StackPanel Margin="5" Orientation="Horizontal">
 
+
                         <fa:ImageAwesome
                             Height="10"
                             Margin="5"

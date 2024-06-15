@@ -29,10 +29,12 @@
                     ToolTip="Add folder">
 
                     <StackPanel Margin="5" Orientation="Horizontal">
+
                         <fa:ImageAwesome
                             Height="10"
                             Margin="5"
                             Icon="Plus" />
+
                         <TextBlock Text="Add folder" />
                     </StackPanel>
 
@@ -44,10 +46,12 @@
                     Command="{Binding UploadCommand}"
                     ToolTip="Upload file">
                     <StackPanel Margin="5" Orientation="Horizontal">
+
                         <fa:ImageAwesome
                             Height="10"
                             Margin="5"
                             Icon="Upload" />
+
                         <TextBlock Text="Upload File" />
                     </StackPanel>
                 </Button>
@@ -59,10 +63,12 @@
                     ToolTip="Download files">
 
                     <StackPanel Margin="5" Orientation="Horizontal">
+
                         <fa:ImageAwesome
                             Height="10"
                             Margin="5"
                             Icon="Download" />
+
                         <TextBlock Text="Download files" />
                     </StackPanel>
 
@@ -74,10 +80,12 @@
                     Command="{Binding DeleteCommand}"
                     ToolTip="Delete files">
                     <StackPanel Margin="5" Orientation="Horizontal">
+
                         <fa:ImageAwesome
                             Height="10"
                             Margin="5"
                             Icon="Trash" />
+
                         <TextBlock Text="Delete files" />
                     </StackPanel>
                 </Button>
